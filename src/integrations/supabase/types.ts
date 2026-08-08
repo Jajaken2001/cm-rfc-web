@@ -1,0 +1,682 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.15"
+  }
+  public: {
+    Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          actor_role: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          attachment: Json | null
+          created_at: string
+          id: string
+          message: string
+          room_id: string
+          sender_email: string
+          sender_id: string
+          sender_name: string | null
+          sender_role: string | null
+        }
+        Insert: {
+          attachment?: Json | null
+          created_at?: string
+          id?: string
+          message: string
+          room_id: string
+          sender_email: string
+          sender_id: string
+          sender_name?: string | null
+          sender_role?: string | null
+        }
+        Update: {
+          attachment?: Json | null
+          created_at?: string
+          id?: string
+          message?: string
+          room_id?: string
+          sender_email?: string
+          sender_id?: string
+          sender_name?: string | null
+          sender_role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_rooms: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      deductions: {
+        Row: {
+          amount: number
+          applicable_date: string
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          id: string
+          notified: boolean
+          reason: string
+          updated_at: string
+          user_email: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          amount: number
+          applicable_date: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          id?: string
+          notified?: boolean
+          reason: string
+          updated_at?: string
+          user_email: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          amount?: number
+          applicable_date?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          id?: string
+          notified?: boolean
+          reason?: string
+          updated_at?: string
+          user_email?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
+      forms: {
+        Row: {
+          allow_attachments: boolean
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          description: string | null
+          fields: Json
+          id: string
+          kind: Database["public"]["Enums"]["form_kind"]
+          status: Database["public"]["Enums"]["form_status"]
+          title: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          allow_attachments?: boolean
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          description?: string | null
+          fields?: Json
+          id?: string
+          kind?: Database["public"]["Enums"]["form_kind"]
+          status?: Database["public"]["Enums"]["form_status"]
+          title: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          allow_attachments?: boolean
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          description?: string | null
+          fields?: Json
+          id?: string
+          kind?: Database["public"]["Enums"]["form_kind"]
+          status?: Database["public"]["Enums"]["form_status"]
+          title?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      notification_acknowledgements: {
+        Row: {
+          acknowledged_at: string
+          id: string
+          notification_id: string
+          user_email: string | null
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string
+          id?: string
+          notification_id: string
+          user_email?: string | null
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string
+          id?: string
+          notification_id?: string
+          user_email?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_acknowledgements_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          audience_user_id: string | null
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          expires_at: string | null
+          id: string
+          message: string
+          publish_at: string
+          repeat_schedule: string
+          requires_ack: boolean
+          status: Database["public"]["Enums"]["notification_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          audience_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          expires_at?: string | null
+          id?: string
+          message: string
+          publish_at?: string
+          repeat_schedule?: string
+          requires_ack?: boolean
+          status?: Database["public"]["Enums"]["notification_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          audience_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string
+          publish_at?: string
+          repeat_schedule?: string
+          requires_ack?: boolean
+          status?: Database["public"]["Enums"]["notification_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          is_authorized: boolean
+          last_seen_at: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          is_authorized?: boolean
+          last_seen_at?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_authorized?: boolean
+          last_seen_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      submission_status_history: {
+        Row: {
+          changed_by: string | null
+          changed_by_email: string | null
+          created_at: string
+          from_status: Database["public"]["Enums"]["submission_status"] | null
+          id: string
+          note: string | null
+          submission_id: string
+          to_status: Database["public"]["Enums"]["submission_status"]
+        }
+        Insert: {
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["submission_status"] | null
+          id?: string
+          note?: string | null
+          submission_id: string
+          to_status: Database["public"]["Enums"]["submission_status"]
+        }
+        Update: {
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          from_status?: Database["public"]["Enums"]["submission_status"] | null
+          id?: string
+          note?: string | null
+          submission_id?: string
+          to_status?: Database["public"]["Enums"]["submission_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submission_status_history_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      submissions: {
+        Row: {
+          answers: Json
+          attachments: Json
+          created_at: string
+          form_id: string | null
+          form_snapshot: Json
+          form_title: string
+          form_version: number
+          id: string
+          kind: Database["public"]["Enums"]["form_kind"]
+          reference: string
+          response_note: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewed_by_email: string | null
+          status: Database["public"]["Enums"]["submission_status"]
+          user_email: string
+          user_id: string
+          user_name: string | null
+        }
+        Insert: {
+          answers?: Json
+          attachments?: Json
+          created_at?: string
+          form_id?: string | null
+          form_snapshot?: Json
+          form_title: string
+          form_version?: number
+          id?: string
+          kind: Database["public"]["Enums"]["form_kind"]
+          reference?: string
+          response_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewed_by_email?: string | null
+          status?: Database["public"]["Enums"]["submission_status"]
+          user_email: string
+          user_id: string
+          user_name?: string | null
+        }
+        Update: {
+          answers?: Json
+          attachments?: Json
+          created_at?: string
+          form_id?: string | null
+          form_snapshot?: Json
+          form_title?: string
+          form_version?: number
+          id?: string
+          kind?: Database["public"]["Enums"]["form_kind"]
+          reference?: string
+          response_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewed_by_email?: string | null
+          status?: Database["public"]["Enums"]["submission_status"]
+          user_email?: string
+          user_id?: string
+          user_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      adjust_deduction: {
+        Args: { _amount: number; _date: string; _id: string; _reason: string }
+        Returns: undefined
+      }
+      assign_role: {
+        Args: { _email: string; _role: Database["public"]["Enums"]["app_role"] }
+        Returns: undefined
+      }
+      bootstrap_profile: {
+        Args: never
+        Returns: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          is_authorized: boolean
+          last_seen_at: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_deduction: {
+        Args: {
+          _amount: number
+          _date: string
+          _notify: boolean
+          _reason: string
+          _user_id: string
+        }
+        Returns: string
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: never; Returns: boolean }
+      is_developer: { Args: never; Returns: boolean }
+      is_staff: { Args: never; Returns: boolean }
+      my_role: { Args: never; Returns: Database["public"]["Enums"]["app_role"] }
+      protected_developer_email: { Args: never; Returns: string }
+      review_submission: {
+        Args: {
+          _id: string
+          _note?: string
+          _status: Database["public"]["Enums"]["submission_status"]
+        }
+        Returns: undefined
+      }
+      set_authorization: {
+        Args: { _authorized: boolean; _user_id: string }
+        Returns: undefined
+      }
+      touch_presence: { Args: never; Returns: undefined }
+      write_audit: {
+        Args: {
+          _action: string
+          _metadata?: Json
+          _target_id: string
+          _target_type: string
+        }
+        Returns: undefined
+      }
+    }
+    Enums: {
+      app_role: "developer" | "admin" | "moderator" | "user"
+      form_kind: "request" | "feedback"
+      form_status: "draft" | "published" | "archived"
+      notification_status: "draft" | "published" | "archived"
+      submission_status:
+        | "pending"
+        | "approved"
+        | "declined"
+        | "new"
+        | "acknowledged"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      app_role: ["developer", "admin", "moderator", "user"],
+      form_kind: ["request", "feedback"],
+      form_status: ["draft", "published", "archived"],
+      notification_status: ["draft", "published", "archived"],
+      submission_status: [
+        "pending",
+        "approved",
+        "declined",
+        "new",
+        "acknowledged",
+      ],
+    },
+  },
+} as const
