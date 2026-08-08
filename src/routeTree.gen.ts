@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authenticated/feedback-forms'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
 
 const IndexRoute = IndexRouteImport.update({
@@ -40,6 +41,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFeedbackFormsRoute =
+  AuthenticatedFeedbackFormsRouteImport.update({
+    id: '/feedback-forms',
+    path: '/feedback-forms',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRequestFormsRoute =
   AuthenticatedRequestFormsRouteImport.update({
     id: '/request-forms',
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/privacy': typeof PrivacyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
 }
 export interface FileRoutesByTo {
@@ -59,6 +67,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/privacy': typeof PrivacyRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
 }
 export interface FileRoutesById {
@@ -68,13 +77,26 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/privacy': typeof PrivacyRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/privacy' | '/dashboard' | '/request-forms'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/privacy'
+    | '/dashboard'
+    | '/feedback-forms'
+    | '/request-forms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/privacy' | '/dashboard' | '/request-forms'
+  to:
+    | '/'
+    | '/auth'
+    | '/privacy'
+    | '/dashboard'
+    | '/feedback-forms'
+    | '/request-forms'
   id:
     | '__root__'
     | '/'
@@ -82,6 +104,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/privacy'
     | '/_authenticated/dashboard'
+    | '/_authenticated/feedback-forms'
     | '/_authenticated/request-forms'
   fileRoutesById: FileRoutesById
 }
@@ -129,6 +152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/feedback-forms': {
+      id: '/_authenticated/feedback-forms'
+      path: '/feedback-forms'
+      fullPath: '/feedback-forms'
+      preLoaderRoute: typeof AuthenticatedFeedbackFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/request-forms': {
       id: '/_authenticated/request-forms'
       path: '/request-forms'
@@ -141,11 +171,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFeedbackFormsRoute: typeof AuthenticatedFeedbackFormsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFeedbackFormsRoute: AuthenticatedFeedbackFormsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
 }
 
