@@ -73,7 +73,7 @@ function navForRole(role: AppRole | null): NavItem[] {
   ];
 }
 
-function NavList({ role, onNavigate }: { role: AppRole | null; onNavigate?: () => void }) {
+function NavList({ role, onNavigate }: { role: AppRole | null; onNavigate?: (() => void) | undefined }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <nav className="flex flex-col gap-1">
@@ -100,7 +100,7 @@ function NavList({ role, onNavigate }: { role: AppRole | null; onNavigate?: () =
   );
 }
 
-function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { profile, role } = useMe();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
