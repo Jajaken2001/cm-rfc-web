@@ -16,6 +16,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authenticated/feedback-forms'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,6 +54,12 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSubmitFormIdRoute =
+  AuthenticatedSubmitFormIdRouteImport.update({
+    id: '/submit/$formId',
+    path: '/submit/$formId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,6 +77,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,6 +88,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/feedback-forms'
     | '/request-forms'
+    | '/submit/$formId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/feedback-forms'
     | '/request-forms'
+    | '/submit/$formId'
   id:
     | '__root__'
     | '/'
@@ -106,6 +118,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/feedback-forms'
     | '/_authenticated/request-forms'
+    | '/_authenticated/submit/$formId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -166,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/submit/$formId': {
+      id: '/_authenticated/submit/$formId'
+      path: '/submit/$formId'
+      fullPath: '/submit/$formId'
+      preLoaderRoute: typeof AuthenticatedSubmitFormIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -173,12 +193,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFeedbackFormsRoute: typeof AuthenticatedFeedbackFormsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFeedbackFormsRoute: AuthenticatedFeedbackFormsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
