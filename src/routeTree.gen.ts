@@ -10,33 +10,263 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDeductionsRouteImport } from './routes/_authenticated/deductions'
+import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authenticated/feedback-forms'
+import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
+import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
+import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
+import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
+import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
+import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
+import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
+import { Route as AuthenticatedManageFormsIndexRouteImport } from './routes/_authenticated/manage.forms.index'
+import { Route as AuthenticatedManageFormsFormIdRouteImport } from './routes/_authenticated/manage.forms.$formId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDeductionsRoute = AuthenticatedDeductionsRouteImport.update({
+  id: '/deductions',
+  path: '/deductions',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFeedbackFormsRoute =
+  AuthenticatedFeedbackFormsRouteImport.update({
+    id: '/feedback-forms',
+    path: '/feedback-forms',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMyRequestsRoute = AuthenticatedMyRequestsRouteImport.update({
+  id: '/my-requests',
+  path: '/my-requests',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRequestFormsRoute =
+  AuthenticatedRequestFormsRouteImport.update({
+    id: '/request-forms',
+    path: '/request-forms',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageAuditRoute =
+  AuthenticatedManageAuditRouteImport.update({
+    id: '/manage/audit',
+    path: '/manage/audit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageDeductionsRoute =
+  AuthenticatedManageDeductionsRouteImport.update({
+    id: '/manage/deductions',
+    path: '/manage/deductions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageFeedbackRoute =
+  AuthenticatedManageFeedbackRouteImport.update({
+    id: '/manage/feedback',
+    path: '/manage/feedback',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageRequestsRoute =
+  AuthenticatedManageRequestsRouteImport.update({
+    id: '/manage/requests',
+    path: '/manage/requests',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageUpdatesRoute =
+  AuthenticatedManageUpdatesRouteImport.update({
+    id: '/manage/updates',
+    path: '/manage/updates',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageUsersRoute =
+  AuthenticatedManageUsersRouteImport.update({
+    id: '/manage/users',
+    path: '/manage/users',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSubmitFormIdRoute =
+  AuthenticatedSubmitFormIdRouteImport.update({
+    id: '/submit/$formId',
+    path: '/submit/$formId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageFormsIndexRoute =
+  AuthenticatedManageFormsIndexRouteImport.update({
+    id: '/manage/forms/',
+    path: '/manage/forms/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageFormsFormIdRoute =
+  AuthenticatedManageFormsFormIdRouteImport.update({
+    id: '/manage/forms/$formId',
+    path: '/manage/forms/$formId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/privacy': typeof PrivacyRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/deductions': typeof AuthenticatedDeductionsRoute
+  '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/my-requests': typeof AuthenticatedMyRequestsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
+  '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/updates': typeof AuthenticatedManageUpdatesRoute
+  '/manage/users': typeof AuthenticatedManageUsersRoute
+  '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
+  '/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/privacy': typeof PrivacyRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/deductions': typeof AuthenticatedDeductionsRoute
+  '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/my-requests': typeof AuthenticatedMyRequestsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
+  '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/updates': typeof AuthenticatedManageUpdatesRoute
+  '/manage/users': typeof AuthenticatedManageUsersRoute
+  '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
+  '/manage/forms': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/privacy': typeof PrivacyRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/deductions': typeof AuthenticatedDeductionsRoute
+  '/_authenticated/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
+  '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
+  '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
+  '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/_authenticated/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
+  '/_authenticated/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/privacy'
+    | '/dashboard'
+    | '/deductions'
+    | '/feedback-forms'
+    | '/my-requests'
+    | '/notifications'
+    | '/request-forms'
+    | '/manage/audit'
+    | '/manage/deductions'
+    | '/manage/feedback'
+    | '/manage/requests'
+    | '/manage/updates'
+    | '/manage/users'
+    | '/submit/$formId'
+    | '/manage/forms/$formId'
+    | '/manage/forms/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/privacy'
+    | '/dashboard'
+    | '/deductions'
+    | '/feedback-forms'
+    | '/my-requests'
+    | '/notifications'
+    | '/request-forms'
+    | '/manage/audit'
+    | '/manage/deductions'
+    | '/manage/feedback'
+    | '/manage/requests'
+    | '/manage/updates'
+    | '/manage/users'
+    | '/submit/$formId'
+    | '/manage/forms/$formId'
+    | '/manage/forms'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/privacy'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/deductions'
+    | '/_authenticated/feedback-forms'
+    | '/_authenticated/my-requests'
+    | '/_authenticated/notifications'
+    | '/_authenticated/request-forms'
+    | '/_authenticated/manage/audit'
+    | '/_authenticated/manage/deductions'
+    | '/_authenticated/manage/feedback'
+    | '/_authenticated/manage/requests'
+    | '/_authenticated/manage/updates'
+    | '/_authenticated/manage/users'
+    | '/_authenticated/submit/$formId'
+    | '/_authenticated/manage/forms/$formId'
+    | '/_authenticated/manage/forms/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  PrivacyRoute: typeof PrivacyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +278,180 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/deductions': {
+      id: '/_authenticated/deductions'
+      path: '/deductions'
+      fullPath: '/deductions'
+      preLoaderRoute: typeof AuthenticatedDeductionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/feedback-forms': {
+      id: '/_authenticated/feedback-forms'
+      path: '/feedback-forms'
+      fullPath: '/feedback-forms'
+      preLoaderRoute: typeof AuthenticatedFeedbackFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-requests': {
+      id: '/_authenticated/my-requests'
+      path: '/my-requests'
+      fullPath: '/my-requests'
+      preLoaderRoute: typeof AuthenticatedMyRequestsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/request-forms': {
+      id: '/_authenticated/request-forms'
+      path: '/request-forms'
+      fullPath: '/request-forms'
+      preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/audit': {
+      id: '/_authenticated/manage/audit'
+      path: '/manage/audit'
+      fullPath: '/manage/audit'
+      preLoaderRoute: typeof AuthenticatedManageAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/deductions': {
+      id: '/_authenticated/manage/deductions'
+      path: '/manage/deductions'
+      fullPath: '/manage/deductions'
+      preLoaderRoute: typeof AuthenticatedManageDeductionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/feedback': {
+      id: '/_authenticated/manage/feedback'
+      path: '/manage/feedback'
+      fullPath: '/manage/feedback'
+      preLoaderRoute: typeof AuthenticatedManageFeedbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/requests': {
+      id: '/_authenticated/manage/requests'
+      path: '/manage/requests'
+      fullPath: '/manage/requests'
+      preLoaderRoute: typeof AuthenticatedManageRequestsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/updates': {
+      id: '/_authenticated/manage/updates'
+      path: '/manage/updates'
+      fullPath: '/manage/updates'
+      preLoaderRoute: typeof AuthenticatedManageUpdatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/users': {
+      id: '/_authenticated/manage/users'
+      path: '/manage/users'
+      fullPath: '/manage/users'
+      preLoaderRoute: typeof AuthenticatedManageUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/submit/$formId': {
+      id: '/_authenticated/submit/$formId'
+      path: '/submit/$formId'
+      fullPath: '/submit/$formId'
+      preLoaderRoute: typeof AuthenticatedSubmitFormIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/forms/': {
+      id: '/_authenticated/manage/forms/'
+      path: '/manage/forms'
+      fullPath: '/manage/forms/'
+      preLoaderRoute: typeof AuthenticatedManageFormsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/forms/$formId': {
+      id: '/_authenticated/manage/forms/$formId'
+      path: '/manage/forms/$formId'
+      fullPath: '/manage/forms/$formId'
+      preLoaderRoute: typeof AuthenticatedManageFormsFormIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDeductionsRoute: typeof AuthenticatedDeductionsRoute
+  AuthenticatedFeedbackFormsRoute: typeof AuthenticatedFeedbackFormsRoute
+  AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
+  AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
+  AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
+  AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
+  AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
+  AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
+  AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
+  AuthenticatedManageFormsFormIdRoute: typeof AuthenticatedManageFormsFormIdRoute
+  AuthenticatedManageFormsIndexRoute: typeof AuthenticatedManageFormsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDeductionsRoute: AuthenticatedDeductionsRoute,
+  AuthenticatedFeedbackFormsRoute: AuthenticatedFeedbackFormsRoute,
+  AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
+  AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
+  AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
+  AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
+  AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
+  AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
+  AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
+  AuthenticatedManageFormsFormIdRoute: AuthenticatedManageFormsFormIdRoute,
+  AuthenticatedManageFormsIndexRoute: AuthenticatedManageFormsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
