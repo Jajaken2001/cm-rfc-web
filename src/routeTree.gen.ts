@@ -22,6 +22,7 @@ import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authent
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
 import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
+import { Route as AuthenticatedManageFormsIndexRouteImport } from './routes/_authenticated/manage.forms.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +94,12 @@ const AuthenticatedSubmitFormIdRoute =
     path: '/submit/$formId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageFormsIndexRoute =
+  AuthenticatedManageFormsIndexRouteImport.update({
+    id: '/manage/forms/',
+    path: '/manage/forms/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,6 +129,7 @@ export interface FileRoutesByTo {
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/manage/forms': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -137,6 +146,7 @@ export interface FileRoutesById {
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/_authenticated/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/manage/feedback'
     | '/manage/requests'
     | '/submit/$formId'
+    | '/manage/forms/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/manage/feedback'
     | '/manage/requests'
     | '/submit/$formId'
+    | '/manage/forms'
   id:
     | '__root__'
     | '/'
@@ -182,6 +194,7 @@ export interface FileRouteTypes {
     | '/_authenticated/manage/feedback'
     | '/_authenticated/manage/requests'
     | '/_authenticated/submit/$formId'
+    | '/_authenticated/manage/forms/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -284,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSubmitFormIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/forms/': {
+      id: '/_authenticated/manage/forms/'
+      path: '/manage/forms'
+      fullPath: '/manage/forms/'
+      preLoaderRoute: typeof AuthenticatedManageFormsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -297,6 +317,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
+  AuthenticatedManageFormsIndexRoute: typeof AuthenticatedManageFormsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -309,6 +330,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
+  AuthenticatedManageFormsIndexRoute: AuthenticatedManageFormsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

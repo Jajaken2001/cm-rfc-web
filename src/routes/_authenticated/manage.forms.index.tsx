@@ -17,7 +17,7 @@ import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDateTime, type FormRecord } from "@/lib/portal";
 
-export const Route = createFileRoute("/_authenticated/manage/forms")({
+export const Route = createFileRoute("/_authenticated/manage/forms/")({
   head: () => ({
     meta: [
       { title: "Manage Forms — Request & Feedback Portal" },
