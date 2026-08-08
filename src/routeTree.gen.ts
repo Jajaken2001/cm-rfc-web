@@ -21,6 +21,7 @@ import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authen
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
+import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
 import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
 import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
 import { Route as AuthenticatedManageFormsIndexRouteImport } from './routes/_authenticated/manage.forms.index'
@@ -90,6 +91,12 @@ const AuthenticatedManageRequestsRoute =
     path: '/manage/requests',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageUpdatesRoute =
+  AuthenticatedManageUpdatesRouteImport.update({
+    id: '/manage/updates',
+    path: '/manage/updates',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedManageUsersRoute =
   AuthenticatedManageUsersRouteImport.update({
     id: '/manage/users',
@@ -127,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/request-forms': typeof AuthenticatedRequestFormsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
@@ -144,6 +152,7 @@ export interface FileRoutesByTo {
   '/request-forms': typeof AuthenticatedRequestFormsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
@@ -163,6 +172,7 @@ export interface FileRoutesById {
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
   '/_authenticated/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/request-forms'
     | '/manage/feedback'
     | '/manage/requests'
+    | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
     | '/manage/forms/$formId'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/request-forms'
     | '/manage/feedback'
     | '/manage/requests'
+    | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
     | '/manage/forms/$formId'
@@ -217,6 +229,7 @@ export interface FileRouteTypes {
     | '/_authenticated/request-forms'
     | '/_authenticated/manage/feedback'
     | '/_authenticated/manage/requests'
+    | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
     | '/_authenticated/submit/$formId'
     | '/_authenticated/manage/forms/$formId'
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageRequestsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/updates': {
+      id: '/_authenticated/manage/updates'
+      path: '/manage/updates'
+      fullPath: '/manage/updates'
+      preLoaderRoute: typeof AuthenticatedManageUpdatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/users': {
       id: '/_authenticated/manage/users'
       path: '/manage/users'
@@ -356,6 +376,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
+  AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
   AuthenticatedManageFormsFormIdRoute: typeof AuthenticatedManageFormsFormIdRoute
@@ -371,6 +392,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
+  AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
   AuthenticatedManageFormsFormIdRoute: AuthenticatedManageFormsFormIdRoute,
