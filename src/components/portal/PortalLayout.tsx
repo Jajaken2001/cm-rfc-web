@@ -4,17 +4,14 @@ import {
   BellRing,
   ClipboardList,
   FileSpreadsheet,
-  Gauge,
   LayoutDashboard,
   LogOut,
   Menu,
-  MessageSquare,
   MessageSquareQuote,
   Megaphone,
   ScrollText,
   ShieldCheck,
   Users,
-  UserCog,
   Wallet,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
@@ -38,7 +35,7 @@ import { StatusBadge } from "@/components/portal/Primitives";
 interface NavItem {
   to: string;
   label: string;
-  icon: typeof Gauge;
+  icon: typeof Wallet;
 }
 
 function navForRole(role: AppRole | null): NavItem[] {
@@ -52,14 +49,10 @@ function navForRole(role: AppRole | null): NavItem[] {
     ];
     if (isAdminRole(role)) {
       items.push({ to: "/manage/deductions", label: "Deductions", icon: Wallet });
-      items.push({ to: "/manage/moderation", label: "Moderation", icon: ShieldCheck });
     }
-    items.push({ to: "/chat", label: "Chat Rooms", icon: MessageSquare });
     items.push({ to: "/manage/updates", label: "Updates", icon: Megaphone });
     if (isDeveloperRole(role)) {
-      items.push({ to: "/manage/roles", label: "Role Assignment", icon: UserCog });
       items.push({ to: "/manage/audit", label: "Audit Logs", icon: ScrollText });
-      items.push({ to: "/manage/system", label: "System", icon: Gauge });
     }
     return items;
   }
