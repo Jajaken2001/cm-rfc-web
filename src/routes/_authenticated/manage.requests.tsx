@@ -72,7 +72,7 @@ function ManageRequestsPage() {
       const { error } = await supabase.rpc("review_submission", {
         _id: review.row.id,
         _status: review.decision,
-        _note: note.trim() || undefined,
+        _note: note.trim(),
       });
       if (error) throw error;
     },

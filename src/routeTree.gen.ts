@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
 import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -73,6 +74,12 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageRequestsRoute =
+  AuthenticatedManageRequestsRouteImport.update({
+    id: '/manage/requests',
+    path: '/manage/requests',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSubmitFormIdRoute =
   AuthenticatedSubmitFormIdRouteImport.update({
     id: '/submit/$formId',
@@ -90,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRoutesByTo {
@@ -102,6 +110,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRoutesById {
@@ -116,6 +125,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/manage/requests'
     | '/submit/$formId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/manage/requests'
     | '/submit/$formId'
   id:
     | '__root__'
@@ -155,6 +167,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/_authenticated/manage/requests'
     | '/_authenticated/submit/$formId'
   fileRoutesById: FileRoutesById
 }
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/requests': {
+      id: '/_authenticated/manage/requests'
+      path: '/manage/requests'
+      fullPath: '/manage/requests'
+      preLoaderRoute: typeof AuthenticatedManageRequestsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/submit/$formId': {
       id: '/_authenticated/submit/$formId'
       path: '/submit/$formId'
@@ -254,6 +274,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
 }
 
@@ -264,6 +285,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
 }
 
