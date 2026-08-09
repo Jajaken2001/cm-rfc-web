@@ -19,9 +19,16 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as JoinCodeRouteImport } from './routes/join.$code'
+import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
+import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
+import { Route as AuthenticatedManageBannersRouteImport } from './routes/_authenticated/manage.banners'
+import { Route as AuthenticatedManageCmsRouteImport } from './routes/_authenticated/manage.cms'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
+import { Route as AuthenticatedManageInvitesRouteImport } from './routes/_authenticated/manage.invites'
+import { Route as AuthenticatedManageModerationRouteImport } from './routes/_authenticated/manage.moderation'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
 import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
 import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
@@ -81,12 +88,38 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const JoinCodeRoute = JoinCodeRouteImport.update({
+  id: '/join/$code',
+  path: '/join/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedChatIndexRoute = AuthenticatedChatIndexRouteImport.update({
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedChatRoomIdRoute = AuthenticatedChatRoomIdRouteImport.update({
+  id: '/chat/$roomId',
+  path: '/chat/$roomId',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedManageAuditRoute =
   AuthenticatedManageAuditRouteImport.update({
     id: '/manage/audit',
     path: '/manage/audit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageBannersRoute =
+  AuthenticatedManageBannersRouteImport.update({
+    id: '/manage/banners',
+    path: '/manage/banners',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageCmsRoute = AuthenticatedManageCmsRouteImport.update({
+  id: '/manage/cms',
+  path: '/manage/cms',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedManageDeductionsRoute =
   AuthenticatedManageDeductionsRouteImport.update({
     id: '/manage/deductions',
@@ -97,6 +130,18 @@ const AuthenticatedManageFeedbackRoute =
   AuthenticatedManageFeedbackRouteImport.update({
     id: '/manage/feedback',
     path: '/manage/feedback',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageInvitesRoute =
+  AuthenticatedManageInvitesRouteImport.update({
+    id: '/manage/invites',
+    path: '/manage/invites',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedManageModerationRoute =
+  AuthenticatedManageModerationRouteImport.update({
+    id: '/manage/moderation',
+    path: '/manage/moderation',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedManageRequestsRoute =
@@ -146,13 +191,20 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
+  '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/invites': typeof AuthenticatedManageInvitesRoute
+  '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/chat/': typeof AuthenticatedChatIndexRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -166,13 +218,20 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
+  '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/invites': typeof AuthenticatedManageInvitesRoute
+  '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/chat': typeof AuthenticatedChatIndexRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/manage/forms': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -188,13 +247,20 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
+  '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/_authenticated/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/_authenticated/manage/cms': typeof AuthenticatedManageCmsRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/_authenticated/manage/invites': typeof AuthenticatedManageInvitesRoute
+  '/_authenticated/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/_authenticated/chat/': typeof AuthenticatedChatIndexRoute
   '/_authenticated/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/_authenticated/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -210,13 +276,20 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/join/$code'
+    | '/chat/$roomId'
     | '/manage/audit'
+    | '/manage/banners'
+    | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
+    | '/manage/invites'
+    | '/manage/moderation'
     | '/manage/requests'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
+    | '/chat/'
     | '/manage/forms/$formId'
     | '/manage/forms/'
   fileRoutesByTo: FileRoutesByTo
@@ -230,13 +303,20 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/join/$code'
+    | '/chat/$roomId'
     | '/manage/audit'
+    | '/manage/banners'
+    | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
+    | '/manage/invites'
+    | '/manage/moderation'
     | '/manage/requests'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
+    | '/chat'
     | '/manage/forms/$formId'
     | '/manage/forms'
   id:
@@ -251,13 +331,20 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/join/$code'
+    | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
+    | '/_authenticated/manage/banners'
+    | '/_authenticated/manage/cms'
     | '/_authenticated/manage/deductions'
     | '/_authenticated/manage/feedback'
+    | '/_authenticated/manage/invites'
+    | '/_authenticated/manage/moderation'
     | '/_authenticated/manage/requests'
     | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
     | '/_authenticated/submit/$formId'
+    | '/_authenticated/chat/'
     | '/_authenticated/manage/forms/$formId'
     | '/_authenticated/manage/forms/'
   fileRoutesById: FileRoutesById
@@ -267,6 +354,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   PrivacyRoute: typeof PrivacyRoute
+  JoinCodeRoute: typeof JoinCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -341,11 +429,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/join/$code': {
+      id: '/join/$code'
+      path: '/join/$code'
+      fullPath: '/join/$code'
+      preLoaderRoute: typeof JoinCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/chat/': {
+      id: '/_authenticated/chat/'
+      path: '/chat'
+      fullPath: '/chat/'
+      preLoaderRoute: typeof AuthenticatedChatIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/chat/$roomId': {
+      id: '/_authenticated/chat/$roomId'
+      path: '/chat/$roomId'
+      fullPath: '/chat/$roomId'
+      preLoaderRoute: typeof AuthenticatedChatRoomIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/audit': {
       id: '/_authenticated/manage/audit'
       path: '/manage/audit'
       fullPath: '/manage/audit'
       preLoaderRoute: typeof AuthenticatedManageAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/banners': {
+      id: '/_authenticated/manage/banners'
+      path: '/manage/banners'
+      fullPath: '/manage/banners'
+      preLoaderRoute: typeof AuthenticatedManageBannersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/cms': {
+      id: '/_authenticated/manage/cms'
+      path: '/manage/cms'
+      fullPath: '/manage/cms'
+      preLoaderRoute: typeof AuthenticatedManageCmsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/manage/deductions': {
@@ -360,6 +483,20 @@ declare module '@tanstack/react-router' {
       path: '/manage/feedback'
       fullPath: '/manage/feedback'
       preLoaderRoute: typeof AuthenticatedManageFeedbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/invites': {
+      id: '/_authenticated/manage/invites'
+      path: '/manage/invites'
+      fullPath: '/manage/invites'
+      preLoaderRoute: typeof AuthenticatedManageInvitesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/manage/moderation': {
+      id: '/_authenticated/manage/moderation'
+      path: '/manage/moderation'
+      fullPath: '/manage/moderation'
+      preLoaderRoute: typeof AuthenticatedManageModerationRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/manage/requests': {
@@ -414,13 +551,19 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
+  AuthenticatedManageBannersRoute: typeof AuthenticatedManageBannersRoute
+  AuthenticatedManageCmsRoute: typeof AuthenticatedManageCmsRoute
   AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
+  AuthenticatedManageInvitesRoute: typeof AuthenticatedManageInvitesRoute
+  AuthenticatedManageModerationRoute: typeof AuthenticatedManageModerationRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
   AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
+  AuthenticatedChatIndexRoute: typeof AuthenticatedChatIndexRoute
   AuthenticatedManageFormsFormIdRoute: typeof AuthenticatedManageFormsFormIdRoute
   AuthenticatedManageFormsIndexRoute: typeof AuthenticatedManageFormsIndexRoute
 }
@@ -432,13 +575,19 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
+  AuthenticatedManageBannersRoute: AuthenticatedManageBannersRoute,
+  AuthenticatedManageCmsRoute: AuthenticatedManageCmsRoute,
   AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
+  AuthenticatedManageInvitesRoute: AuthenticatedManageInvitesRoute,
+  AuthenticatedManageModerationRoute: AuthenticatedManageModerationRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
   AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
+  AuthenticatedChatIndexRoute: AuthenticatedChatIndexRoute,
   AuthenticatedManageFormsFormIdRoute: AuthenticatedManageFormsFormIdRoute,
   AuthenticatedManageFormsIndexRoute: AuthenticatedManageFormsIndexRoute,
 }
@@ -451,6 +600,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   PrivacyRoute: PrivacyRoute,
+  JoinCodeRoute: JoinCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
