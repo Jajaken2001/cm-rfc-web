@@ -23,6 +23,7 @@ import { Route as JoinCodeRouteImport } from './routes/join.$code'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
 import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
+import { Route as AuthenticatedManageCmsRouteImport } from './routes/_authenticated/manage.cms'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
 import { Route as AuthenticatedManageInvitesRouteImport } from './routes/_authenticated/manage.invites'
@@ -107,6 +108,11 @@ const AuthenticatedManageAuditRoute =
     path: '/manage/audit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageCmsRoute = AuthenticatedManageCmsRouteImport.update({
+  id: '/manage/cms',
+  path: '/manage/cms',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedManageDeductionsRoute =
   AuthenticatedManageDeductionsRouteImport.update({
     id: '/manage/deductions',
@@ -181,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   '/join/$code': typeof JoinCodeRoute
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
+  '/_authenticated/manage/cms': typeof AuthenticatedManageCmsRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
   '/_authenticated/manage/invites': typeof AuthenticatedManageInvitesRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
+    | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
     | '/manage/invites'
@@ -285,6 +295,7 @@ export interface FileRouteTypes {
     | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
+    | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
     | '/manage/invites'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/join/$code'
     | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
+    | '/_authenticated/manage/cms'
     | '/_authenticated/manage/deductions'
     | '/_authenticated/manage/feedback'
     | '/_authenticated/manage/invites'
@@ -432,6 +444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageAuditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/cms': {
+      id: '/_authenticated/manage/cms'
+      path: '/manage/cms'
+      fullPath: '/manage/cms'
+      preLoaderRoute: typeof AuthenticatedManageCmsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/deductions': {
       id: '/_authenticated/manage/deductions'
       path: '/manage/deductions'
@@ -514,6 +533,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
   AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
+  AuthenticatedManageCmsRoute: typeof AuthenticatedManageCmsRoute
   AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
   AuthenticatedManageInvitesRoute: typeof AuthenticatedManageInvitesRoute
@@ -536,6 +556,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
   AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
+  AuthenticatedManageCmsRoute: AuthenticatedManageCmsRoute,
   AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
   AuthenticatedManageInvitesRoute: AuthenticatedManageInvitesRoute,
