@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as JoinCodeRouteImport } from './routes/join.$code'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
 import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
@@ -85,6 +86,11 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const JoinCodeRoute = JoinCodeRouteImport.update({
+  id: '/join/$code',
+  path: '/join/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedChatIndexRoute = AuthenticatedChatIndexRouteImport.update({
   id: '/chat/',
   path: '/chat/',
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/join/$code': typeof JoinCodeRoute
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/deductions'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/deductions'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/join/$code'
     | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
     | '/_authenticated/manage/deductions'
@@ -317,6 +329,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   PrivacyRoute: typeof PrivacyRoute
+  JoinCodeRoute: typeof JoinCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/request-forms'
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/join/$code': {
+      id: '/join/$code'
+      path: '/join/$code'
+      fullPath: '/join/$code'
+      preLoaderRoute: typeof JoinCodeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/chat/': {
       id: '/_authenticated/chat/'
@@ -537,6 +557,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   PrivacyRoute: PrivacyRoute,
+  JoinCodeRoute: JoinCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
