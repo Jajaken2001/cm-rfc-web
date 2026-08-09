@@ -122,7 +122,7 @@ function ChatRoomPage() {
       const { error } = await supabase.rpc("moderate_message", {
         _message_id: id,
         _hide: hidden,
-        _reason: hidden ? "Hidden by an administrator" : undefined,
+        _reason: hidden ? "Hidden by an administrator" : "",
       });
       if (error) throw error;
     },

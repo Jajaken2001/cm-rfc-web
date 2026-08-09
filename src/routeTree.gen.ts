@@ -20,6 +20,7 @@ import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
+import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
@@ -87,6 +88,11 @@ const AuthenticatedChatIndexRoute = AuthenticatedChatIndexRouteImport.update({
   path: '/chat/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedChatRoomIdRoute = AuthenticatedChatRoomIdRouteImport.update({
+  id: '/chat/$roomId',
+  path: '/chat/$roomId',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedManageAuditRoute =
   AuthenticatedManageAuditRouteImport.update({
     id: '/manage/audit',
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/deductions'
     | '/manage/feedback'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/deductions'
     | '/manage/feedback'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
     | '/_authenticated/manage/deductions'
     | '/_authenticated/manage/feedback'
@@ -360,6 +372,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedChatIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/chat/$roomId': {
+      id: '/_authenticated/chat/$roomId'
+      path: '/chat/$roomId'
+      fullPath: '/chat/$roomId'
+      preLoaderRoute: typeof AuthenticatedChatRoomIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/audit': {
       id: '/_authenticated/manage/audit'
       path: '/manage/audit'
@@ -433,6 +452,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
   AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
@@ -452,6 +472,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
   AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
