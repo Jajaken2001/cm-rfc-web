@@ -46,12 +46,17 @@ function navForRole(role: AppRole | null): NavItem[] {
       { to: "/manage/forms", label: "Forms", icon: FileSpreadsheet },
       { to: "/manage/users", label: "Users", icon: Users },
       { to: "/manage/feedback", label: "Feedback", icon: MessageSquareQuote },
+      { to: "/chat", label: "Team Chat", icon: MessagesSquare },
     ];
     if (isAdminRole(role)) {
+      items.push({ to: "/manage/moderation", label: "Moderation", icon: ShieldCheck });
+      items.push({ to: "/manage/invites", label: "Access Links", icon: Link2 });
       items.push({ to: "/manage/deductions", label: "Deductions", icon: Wallet });
     }
     items.push({ to: "/manage/updates", label: "Updates", icon: Megaphone });
     if (isDeveloperRole(role)) {
+      items.push({ to: "/manage/banners", label: "Banners", icon: Flag });
+      items.push({ to: "/manage/cms", label: "Landing Page", icon: PanelsTopLeft });
       items.push({ to: "/manage/audit", label: "Audit Logs", icon: ScrollText });
     }
     return items;
