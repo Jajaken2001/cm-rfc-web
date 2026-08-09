@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   BellRing,
   ClipboardList,
@@ -47,6 +48,13 @@ const steps = [
 ];
 
 function Landing() {
+  const { session, loading } = useSession();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && session) void navigate({ to: "/dashboard", replace: true });
+  }, [loading, session, navigate]);
+
   return (
     <PublicShell>
       <section className="surface-hero text-primary-foreground">
