@@ -54,7 +54,11 @@ export type Database = {
         Row: {
           attachment: Json | null
           created_at: string
+          hidden_at: string | null
+          hidden_by: string | null
+          hidden_reason: string | null
           id: string
+          is_hidden: boolean
           message: string
           room_id: string
           sender_email: string
@@ -65,7 +69,11 @@ export type Database = {
         Insert: {
           attachment?: Json | null
           created_at?: string
+          hidden_at?: string | null
+          hidden_by?: string | null
+          hidden_reason?: string | null
           id?: string
+          is_hidden?: boolean
           message: string
           room_id: string
           sender_email: string
@@ -76,7 +84,11 @@ export type Database = {
         Update: {
           attachment?: Json | null
           created_at?: string
+          hidden_at?: string | null
+          hidden_by?: string | null
+          hidden_reason?: string | null
           id?: string
+          is_hidden?: boolean
           message?: string
           room_id?: string
           sender_email?: string
@@ -96,22 +108,34 @@ export type Database = {
       }
       chat_rooms: {
         Row: {
+          allowed_roles: Database["public"]["Enums"]["app_role"][]
           created_at: string
           description: string | null
           id: string
+          is_active: boolean
           name: string
+          scope: string
+          sort_order: number
         }
         Insert: {
+          allowed_roles?: Database["public"]["Enums"]["app_role"][]
           created_at?: string
           description?: string | null
           id: string
+          is_active?: boolean
           name: string
+          scope?: string
+          sort_order?: number
         }
         Update: {
+          allowed_roles?: Database["public"]["Enums"]["app_role"][]
           created_at?: string
           description?: string | null
           id?: string
+          is_active?: boolean
           name?: string
+          scope?: string
+          sort_order?: number
         }
         Relationships: []
       }
@@ -204,6 +228,136 @@ export type Database = {
           version?: number
         }
         Relationships: []
+      }
+      invite_links: {
+        Row: {
+          code_hash: string
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          expires_at: string | null
+          id: string
+          label: string | null
+          max_uses: number | null
+          revoked: boolean
+          updated_at: string
+          used_count: number
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          expires_at?: string | null
+          id?: string
+          label?: string | null
+          max_uses?: number | null
+          revoked?: boolean
+          updated_at?: string
+          used_count?: number
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          expires_at?: string | null
+          id?: string
+          label?: string | null
+          max_uses?: number | null
+          revoked?: boolean
+          updated_at?: string
+          used_count?: number
+        }
+        Relationships: []
+      }
+      invite_redemptions: {
+        Row: {
+          created_at: string
+          id: string
+          invite_id: string
+          user_email: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_id: string
+          user_email?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_id?: string
+          user_email?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_redemptions_invite_id_fkey"
+            columns: ["invite_id"]
+            isOneToOne: false
+            referencedRelation: "invite_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      moderation_reports: {
+        Row: {
+          created_at: string
+          id: string
+          message_id: string
+          reason: string
+          reported_by: string | null
+          reported_by_email: string | null
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          resolved_by_email: string | null
+          room_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_id: string
+          reason: string
+          reported_by?: string | null
+          reported_by_email?: string | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resolved_by_email?: string | null
+          room_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_id?: string
+          reason?: string
+          reported_by?: string | null
+          reported_by_email?: string | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          resolved_by_email?: string | null
+          room_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "moderation_reports_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notification_acknowledgements: {
         Row: {
@@ -315,6 +469,81 @@ export type Database = {
           is_authorized?: boolean
           last_seen_at?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      site_banners: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          ends_at: string | null
+          id: string
+          is_active: boolean
+          link_label: string | null
+          link_url: string | null
+          message: string
+          sort_order: number
+          starts_at: string
+          updated_at: string
+          variant: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          link_label?: string | null
+          link_url?: string | null
+          message: string
+          sort_order?: number
+          starts_at?: string
+          updated_at?: string
+          variant?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          ends_at?: string | null
+          id?: string
+          is_active?: boolean
+          link_label?: string | null
+          link_url?: string | null
+          message?: string
+          sort_order?: number
+          starts_at?: string
+          updated_at?: string
+          variant?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          created_at: string
+          key: string
+          updated_at: string
+          updated_by: string | null
+          updated_by_email: string | null
+          value: Json
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+          value?: Json
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+          value?: Json
         }
         Relationships: []
       }
@@ -483,6 +712,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      can_access_room: { Args: { _room_id: string }; Returns: boolean }
       create_deduction: {
         Args: {
           _amount: number
@@ -493,6 +723,10 @@ export type Database = {
         }
         Returns: string
       }
+      create_invite_link: {
+        Args: { _expires_at: string; _label: string; _max_uses: number }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -500,11 +734,25 @@ export type Database = {
         }
         Returns: boolean
       }
+      hash_invite_code: { Args: { _code: string }; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_developer: { Args: never; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }
+      moderate_message: {
+        Args: { _hide: boolean; _message_id: string; _reason?: string }
+        Returns: undefined
+      }
       my_role: { Args: never; Returns: Database["public"]["Enums"]["app_role"] }
       protected_developer_email: { Args: never; Returns: string }
+      redeem_invite_link: { Args: { _code: string }; Returns: string }
+      report_message: {
+        Args: { _message_id: string; _reason: string }
+        Returns: string
+      }
+      resolve_report: {
+        Args: { _id: string; _note?: string; _status: string }
+        Returns: undefined
+      }
       review_submission: {
         Args: {
           _id: string
@@ -513,6 +761,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      revoke_invite_link: { Args: { _id: string }; Returns: undefined }
       set_authorization: {
         Args: { _authorized: boolean; _user_id: string }
         Returns: undefined
