@@ -24,6 +24,7 @@ import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authentic
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
+import { Route as AuthenticatedManageModerationRouteImport } from './routes/_authenticated/manage.moderation'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
 import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
 import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
@@ -111,6 +112,12 @@ const AuthenticatedManageFeedbackRoute =
     path: '/manage/feedback',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageModerationRoute =
+  AuthenticatedManageModerationRouteImport.update({
+    id: '/manage/moderation',
+    path: '/manage/moderation',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedManageRequestsRoute =
   AuthenticatedManageRequestsRouteImport.update({
     id: '/manage/requests',
@@ -162,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
@@ -184,6 +192,7 @@ export interface FileRoutesByTo {
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
@@ -208,6 +217,7 @@ export interface FileRoutesById {
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
+  '/_authenticated/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
   '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/manage/audit'
     | '/manage/deductions'
     | '/manage/feedback'
+    | '/manage/moderation'
     | '/manage/requests'
     | '/manage/updates'
     | '/manage/users'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/manage/audit'
     | '/manage/deductions'
     | '/manage/feedback'
+    | '/manage/moderation'
     | '/manage/requests'
     | '/manage/updates'
     | '/manage/users'
@@ -277,6 +289,7 @@ export interface FileRouteTypes {
     | '/_authenticated/manage/audit'
     | '/_authenticated/manage/deductions'
     | '/_authenticated/manage/feedback'
+    | '/_authenticated/manage/moderation'
     | '/_authenticated/manage/requests'
     | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
@@ -400,6 +413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageFeedbackRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/moderation': {
+      id: '/_authenticated/manage/moderation'
+      path: '/manage/moderation'
+      fullPath: '/manage/moderation'
+      preLoaderRoute: typeof AuthenticatedManageModerationRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/requests': {
       id: '/_authenticated/manage/requests'
       path: '/manage/requests'
@@ -456,6 +476,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
   AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
+  AuthenticatedManageModerationRoute: typeof AuthenticatedManageModerationRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
   AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
@@ -476,6 +497,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
   AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
+  AuthenticatedManageModerationRoute: AuthenticatedManageModerationRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
   AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
