@@ -12,6 +12,7 @@ import {
 
 import { GoogleSignInButton } from "@/components/portal/GoogleSignInButton";
 import { PublicShell } from "@/components/portal/PublicShell";
+import { useSession } from "@/hooks/useMe";
 
 export const Route = createFileRoute("/")({
   head: () => ({
