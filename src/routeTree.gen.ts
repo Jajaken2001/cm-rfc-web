@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
@@ -81,6 +82,11 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedChatIndexRoute = AuthenticatedChatIndexRouteImport.update({
+  id: '/chat/',
+  path: '/chat/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedManageAuditRoute =
   AuthenticatedManageAuditRouteImport.update({
     id: '/manage/audit',
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/chat/': typeof AuthenticatedChatIndexRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/chat': typeof AuthenticatedChatIndexRoute
   '/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/manage/forms': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
+  '/_authenticated/chat/': typeof AuthenticatedChatIndexRoute
   '/_authenticated/manage/forms/$formId': typeof AuthenticatedManageFormsFormIdRoute
   '/_authenticated/manage/forms/': typeof AuthenticatedManageFormsIndexRoute
 }
@@ -217,6 +226,7 @@ export interface FileRouteTypes {
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
+    | '/chat/'
     | '/manage/forms/$formId'
     | '/manage/forms/'
   fileRoutesByTo: FileRoutesByTo
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
+    | '/chat'
     | '/manage/forms/$formId'
     | '/manage/forms'
   id:
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
     | '/_authenticated/submit/$formId'
+    | '/_authenticated/chat/'
     | '/_authenticated/manage/forms/$formId'
     | '/_authenticated/manage/forms/'
   fileRoutesById: FileRoutesById
@@ -341,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/chat/': {
+      id: '/_authenticated/chat/'
+      path: '/chat'
+      fullPath: '/chat/'
+      preLoaderRoute: typeof AuthenticatedChatIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/audit': {
       id: '/_authenticated/manage/audit'
       path: '/manage/audit'
@@ -421,6 +440,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
+  AuthenticatedChatIndexRoute: typeof AuthenticatedChatIndexRoute
   AuthenticatedManageFormsFormIdRoute: typeof AuthenticatedManageFormsFormIdRoute
   AuthenticatedManageFormsIndexRoute: typeof AuthenticatedManageFormsIndexRoute
 }
@@ -439,6 +459,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
+  AuthenticatedChatIndexRoute: AuthenticatedChatIndexRoute,
   AuthenticatedManageFormsFormIdRoute: AuthenticatedManageFormsFormIdRoute,
   AuthenticatedManageFormsIndexRoute: AuthenticatedManageFormsIndexRoute,
 }
