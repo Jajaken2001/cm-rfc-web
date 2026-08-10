@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { useMembers } from "@/routes/_authenticated/manage.users";
@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDate, formatPeso, weekLabel, type DeductionRecord } from "@/lib/portal";
+import { formatDate, formatPeso, isDeveloperRole, weekLabel, type DeductionRecord } from "@/lib/portal";
+import { useMe } from "@/hooks/useMe";
 
 export const Route = createFileRoute("/_authenticated/manage/deductions")({
   head: () => ({
@@ -44,6 +45,7 @@ const EMPTY = { userId: "", amount: "", reason: "", date: "", notify: true };
 
 function ManageDeductionsPage() {
   const queryClient = useQueryClient();
+  const { role } = useMe();
   const members = useMembers();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({ ...EMPTY });
@@ -100,6 +102,20 @@ function ManageDeductionsPage() {
     onError: () => toast.error("Could not adjust the deduction"),
   });
 
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("delete_deduction", { _id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["manage-deductions"] });
+      void queryClient.invalidateQueries({ queryKey: ["deductions"] });
+      toast.success("Deduction removed");
+    },
+    onError: () => toast.error("Could not remove this deduction"),
+  });
+
+  const canDelete = isDeveloperRole(role);
   const rows = query.data ?? [];
   const byWeek = new Map<string, DeductionRecord[]>();
   for (const row of rows) {
@@ -148,6 +164,19 @@ function ManageDeductionsPage() {
                   <Button variant="outline" size="sm" onClick={() => setEditing({ ...item })}>
                     Adjust
                   </Button>
+                  {canDelete ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Remove deduction for ${item.user_email}`}
+                      disabled={remove.isPending}
+                      onClick={() => {
+                        if (window.confirm("Permanently remove this deduction?")) remove.mutate(item.id);
+                      }}
+                    >
+                      <Trash2 className="size-4 text-destructive" />
+                    </Button>
+                  ) : null}
                 </li>
               ))}
             </ul>

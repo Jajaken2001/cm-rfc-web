@@ -1,5 +1,4 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   BellRing,
   ClipboardList,
@@ -7,13 +6,13 @@ import {
   Flag,
   LayoutDashboard,
   Link2,
-  LogOut,
   Menu,
   MessageSquareQuote,
   MessagesSquare,
   Megaphone,
   PanelsTopLeft,
   ScrollText,
+  Settings,
   ShieldCheck,
   Users,
   Wallet,
@@ -24,7 +23,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useMe } from "@/hooks/useMe";
-import { supabase } from "@/integrations/supabase/client";
 import {
   ROLE_LABEL,
   initialsOf,
@@ -35,6 +33,7 @@ import {
 } from "@/lib/portal";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "@/components/portal/Primitives";
+import { AnnouncementModal } from "@/components/portal/AnnouncementModal";
 
 interface NavItem {
   to: string;
@@ -50,7 +49,7 @@ function navForRole(role: AppRole | null): NavItem[] {
       { to: "/manage/forms", label: "Forms", icon: FileSpreadsheet },
       { to: "/manage/users", label: "Users", icon: Users },
       { to: "/manage/feedback", label: "Feedback", icon: MessageSquareQuote },
-      { to: "/chat", label: "Team Chat", icon: MessagesSquare },
+      { to: "/chat", label: "Chat Rooms", icon: MessagesSquare },
     ];
     if (isAdminRole(role)) {
       items.push({ to: "/manage/moderation", label: "Moderation", icon: ShieldCheck });
@@ -72,6 +71,7 @@ function navForRole(role: AppRole | null): NavItem[] {
     { to: "/request-forms", label: "Request Forms", icon: FileSpreadsheet },
     { to: "/feedback-forms", label: "Feedback Forms", icon: MessageSquareQuote },
     { to: "/deductions", label: "Deductions", icon: Wallet },
+    { to: "/chat", label: "Chat Rooms", icon: MessagesSquare },
   ];
 }
 
@@ -104,15 +104,6 @@ function NavList({ role, onNavigate }: { role: AppRole | null; onNavigate?: (() 
 
 function SidebarBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) {
   const { profile, role } = useMe();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  async function signOut() {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    void navigate({ to: "/", replace: true });
-  }
 
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
@@ -145,9 +136,13 @@ function SidebarBody({ onNavigate }: { onNavigate?: (() => void) | undefined }) 
         <div className="px-2 pb-2">
           {role ? <StatusBadge status={role} label={ROLE_LABEL[role]} /> : null}
         </div>
-        <Button variant="ghost" onClick={signOut} className="w-full justify-start gap-3 text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground">
-          <LogOut className="size-4" /> Logout
-        </Button>
+        <Link
+          to="/settings"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
+        >
+          <Settings className="size-4" /> Settings
+        </Link>
       </div>
     </div>
   );
@@ -182,6 +177,7 @@ export function PortalLayout({ children }: { children: ReactNode }) {
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">{children}</main>
       </div>
+      <AnnouncementModal />
     </div>
   );
 }

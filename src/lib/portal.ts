@@ -128,6 +128,7 @@ export interface NotificationRecord {
   repeat_schedule: string;
   requires_ack: boolean;
   audience_user_id: string | null;
+  media?: unknown;
   created_by_email: string | null;
   created_at: string;
 }

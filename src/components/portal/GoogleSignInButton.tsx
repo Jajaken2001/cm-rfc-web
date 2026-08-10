@@ -18,6 +18,10 @@ export function GoogleSignInButton({
   async function handleSignIn() {
     setBusy(true);
     try {
+      const here = `${window.location.pathname}${window.location.search}`;
+      if (here.startsWith("/") && !here.startsWith("//") && here !== "/") {
+        window.sessionStorage.setItem("portal-post-login-path", here);
+      }
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
