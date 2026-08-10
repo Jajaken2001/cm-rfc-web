@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -33,7 +33,9 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDateTime, type NotificationRecord } from "@/lib/portal";
+import { MEDIA_KINDS, parseMedia, type MediaItem, type MediaKind } from "@/lib/media";
+import { formatDateTime, isDeveloperRole, type NotificationRecord } from "@/lib/portal";
+import { MediaEmbeds } from "@/components/portal/MediaEmbeds";
 
 export const Route = createFileRoute("/_authenticated/manage/updates")({
   head: () => ({
@@ -47,20 +49,31 @@ export const Route = createFileRoute("/_authenticated/manage/updates")({
   component: ManageUpdatesPage,
 });
 
-const EMPTY = {
+interface Draft {
+  title: string;
+  message: string;
+  publishAt: string;
+  expiresAt: string;
+  repeat: string;
+  requiresAck: boolean;
+  media: MediaItem[];
+}
+
+const EMPTY: Draft = {
   title: "",
   message: "",
   publishAt: "",
   expiresAt: "",
   repeat: "none",
   requiresAck: false,
+  media: [],
 };
 
 function ManageUpdatesPage() {
-  const { profile } = useMe();
+  const { profile, role } = useMe();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState({ ...EMPTY });
+  const [draft, setDraft] = useState<Draft>({ ...EMPTY, media: [] });
 
   const query = useQuery({
     queryKey: ["manage-notifications"],
@@ -90,6 +103,9 @@ function ManageUpdatesPage() {
         expires_at: draft.expiresAt ? new Date(draft.expiresAt).toISOString() : null,
         repeat_schedule: draft.repeat,
         requires_ack: draft.requiresAck,
+        media: draft.media
+          .filter((m) => m.url.trim())
+          .map((m) => ({ kind: m.kind, url: m.url.trim(), label: (m.label ?? "").trim() })) as unknown as never,
         created_by: profile?.id ?? null,
         created_by_email: profile?.email ?? null,
       });
@@ -99,7 +115,7 @@ function ManageUpdatesPage() {
       queryClient.invalidateQueries({ queryKey: ["manage-notifications"] });
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
       setOpen(false);
-      setDraft({ ...EMPTY });
+      setDraft({ ...EMPTY, media: [] });
       toast.success("Update saved");
     },
     onError: () => toast.error("Could not save the update", { description: "A title and message are required." }),
@@ -117,6 +133,27 @@ function ManageUpdatesPage() {
     },
     onError: () => toast.error("Could not change this update"),
   });
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("delete_notification", { _id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["manage-notifications"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      toast.success("Update removed");
+    },
+    onError: () => toast.error("Could not remove this update"),
+  });
+
+  const canDelete = isDeveloperRole(role);
+
+  const setMedia = (index: number, patch: Partial<MediaItem>) =>
+    setDraft((prev) => ({
+      ...prev,
+      media: prev.media.map((m, i) => (i === index ? { ...m, ...patch } : m)),
+    }));
 
   return (
     <div className="space-y-6">
@@ -170,6 +207,19 @@ function ManageUpdatesPage() {
                     Archive
                   </Button>
                 )}
+                {canDelete ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Remove ${note.title}`}
+                    disabled={remove.isPending}
+                    onClick={() => {
+                      if (window.confirm(`Permanently remove "${note.title}"?`)) remove.mutate(note.id);
+                    }}
+                  >
+                    <Trash2 className="size-4 text-destructive" />
+                  </Button>
+                ) : null}
               </div>
             </div>
           ))}
@@ -240,6 +290,78 @@ function ManageUpdatesPage() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-3 rounded-md border border-border p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-medium">Attachments</p>
+                  <p className="text-sm text-muted-foreground">
+                    Links, pictures and videos are shown embedded inside the update.
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() =>
+                    setDraft((prev) => ({
+                      ...prev,
+                      media: [...prev.media, { kind: "link", url: "", label: "" }],
+                    }))
+                  }
+                >
+                  <Plus className="size-4" /> Add
+                </Button>
+              </div>
+
+              {draft.media.map((m, i) => (
+                <div key={i} className="grid gap-2 rounded-md border border-border p-3 sm:grid-cols-[7.5rem_1fr_auto]">
+                  <Select value={m.kind} onValueChange={(v) => setMedia(i, { kind: v as MediaKind })}>
+                    <SelectTrigger aria-label={`Attachment ${i + 1} type`}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {MEDIA_KINDS.map((k) => (
+                        <SelectItem key={k.value} value={k.value}>
+                          {k.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="space-y-2">
+                    <Input
+                      aria-label={`Attachment ${i + 1} URL`}
+                      placeholder="https://…"
+                      value={m.url}
+                      onChange={(e) => setMedia(i, { url: e.target.value })}
+                    />
+                    <Input
+                      aria-label={`Attachment ${i + 1} caption`}
+                      placeholder="Caption (optional)"
+                      value={m.label ?? ""}
+                      onChange={(e) => setMedia(i, { label: e.target.value })}
+                    />
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Remove attachment ${i + 1}`}
+                    onClick={() =>
+                      setDraft((prev) => ({ ...prev, media: prev.media.filter((_, j) => j !== i) }))
+                    }
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
+              ))}
+
+              {draft.media.some((m) => m.url.trim()) ? (
+                <div>
+                  <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">Preview</p>
+                  <MediaEmbeds items={parseMedia(draft.media)} />
+                </div>
+              ) : null}
+            </div>
+
             <div className="flex items-center justify-between rounded-md border border-border px-4 py-3">
               <div>
                 <p className="text-sm font-medium">Require acknowledgement</p>
