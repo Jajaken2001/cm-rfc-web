@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as JoinCodeRouteImport } from './routes/join.$code'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
 import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
@@ -88,6 +89,11 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const JoinCodeRoute = JoinCodeRouteImport.update({
   id: '/join/$code',
   path: '/join/$code',
@@ -191,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
@@ -218,6 +225,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
@@ -276,6 +285,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
@@ -303,6 +313,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
     | '/manage/audit'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/_authenticated/settings'
     | '/join/$code'
     | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
@@ -427,6 +439,13 @@ declare module '@tanstack/react-router' {
       path: '/request-forms'
       fullPath: '/request-forms'
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/join/$code': {
@@ -551,6 +570,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
   AuthenticatedManageBannersRoute: typeof AuthenticatedManageBannersRoute
@@ -575,6 +595,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
   AuthenticatedManageBannersRoute: AuthenticatedManageBannersRoute,
@@ -605,13 +626,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
