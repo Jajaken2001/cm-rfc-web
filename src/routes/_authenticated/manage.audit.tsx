@@ -1,11 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { EmptyState, ErrorState, LoadingState, PageHeader } from "@/components/portal/Primitives";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDateTime, type AuditLogRecord } from "@/lib/portal";
+import { formatDateTime, isDeveloperRole, type AuditLogRecord } from "@/lib/portal";
 
 export const Route = createFileRoute("/_authenticated/manage/audit")({
   head: () => ({
@@ -21,6 +25,9 @@ export const Route = createFileRoute("/_authenticated/manage/audit")({
 
 function AuditPage() {
   const [search, setSearch] = useState("");
+  const { role } = useMe();
+  const queryClient = useQueryClient();
+  const canDelete = isDeveloperRole(role);
   const query = useQuery({
     queryKey: ["audit-logs"],
     queryFn: async () => {
@@ -44,11 +51,23 @@ function AuditPage() {
     );
   });
 
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("delete_audit_log", { _id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["audit-logs"] });
+      toast.success("Entry removed");
+    },
+    onError: () => toast.error("Could not remove this entry"),
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Audit Logs"
-        description="Role changes, reviews, deductions and other administrative actions. Entries cannot be edited or deleted."
+        description="Role changes, reviews, deductions and other administrative actions. Entries cannot be edited; only a Developer can purge them."
       />
       <Input
         placeholder="Search action, actor or target"
@@ -75,6 +94,19 @@ function AuditPage() {
                 <span className="ml-auto text-xs text-muted-foreground">
                   {formatDateTime(log.created_at)}
                 </span>
+                {canDelete ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Remove audit entry"
+                    disabled={remove.isPending}
+                    onClick={() => {
+                      if (window.confirm("Permanently remove this audit entry?")) remove.mutate(log.id);
+                    }}
+                  >
+                    <Trash2 className="size-4 text-destructive" />
+                  </Button>
+                ) : null}
               </div>
               {log.target_type ? (
                 <p className="mt-1 text-xs text-muted-foreground">
