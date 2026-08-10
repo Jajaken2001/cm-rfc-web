@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Copy, Link2 } from "lucide-react";
+import { Copy, Link2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDateTime, isAdminRole } from "@/lib/portal";
+import { formatDateTime, isAdminRole, isDeveloperRole } from "@/lib/portal";
 import type { InviteLinkRecord } from "@/lib/site-content";
 
 export const Route = createFileRoute("/_authenticated/manage/invites")({
@@ -86,6 +86,20 @@ function InvitesPage() {
     },
     onError: () => toast.error("Could not revoke this link"),
   });
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("delete_invite_link", { _id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["invite-links"] });
+      toast.success("Access link removed");
+    },
+    onError: () => toast.error("Could not remove this link"),
+  });
+
+  const canDelete = isDeveloperRole(role);
 
   if (!isAdminRole(role)) {
     return (
@@ -194,6 +208,19 @@ function InvitesPage() {
                 {!link.revoked ? (
                   <Button variant="ghost" size="sm" onClick={() => revoke.mutate(link.id)}>
                     Revoke
+                  </Button>
+                ) : null}
+                {canDelete ? (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Remove access link"
+                    disabled={remove.isPending}
+                    onClick={() => {
+                      if (window.confirm("Permanently remove this access link?")) remove.mutate(link.id);
+                    }}
+                  >
+                    <Trash2 className="size-4 text-destructive" />
                   </Button>
                 ) : null}
               </div>
