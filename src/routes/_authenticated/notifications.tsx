@@ -3,11 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BellRing, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { MediaEmbeds } from "@/components/portal/MediaEmbeds";
 import { EmptyState, ErrorState, LoadingState, PageHeader } from "@/components/portal/Primitives";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
+import { parseMedia } from "@/lib/media";
 import { formatDateTime, type NotificationRecord } from "@/lib/portal";
 
 export const Route = createFileRoute("/_authenticated/notifications")({
@@ -115,6 +117,7 @@ function NotificationsPage() {
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
                   {note.message}
                 </p>
+                <MediaEmbeds items={parseMedia(note.media)} className="mt-4" />
               </article>
             );
           })}
