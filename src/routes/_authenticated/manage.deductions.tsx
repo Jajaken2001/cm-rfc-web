@@ -45,6 +45,7 @@ const EMPTY = { userId: "", amount: "", reason: "", date: "", notify: true };
 
 function ManageDeductionsPage() {
   const queryClient = useQueryClient();
+  const { role } = useMe();
   const members = useMembers();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState({ ...EMPTY });
