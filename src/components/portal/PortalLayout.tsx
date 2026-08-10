@@ -62,7 +62,6 @@ function navForRole(role: AppRole | null): NavItem[] {
       items.push({ to: "/manage/cms", label: "Landing Page", icon: PanelsTopLeft });
       items.push({ to: "/manage/audit", label: "Audit Logs", icon: ScrollText });
     }
-    items.push({ to: "/settings", label: "Settings", icon: Settings });
     return items;
   }
   return [
@@ -73,7 +72,6 @@ function navForRole(role: AppRole | null): NavItem[] {
     { to: "/feedback-forms", label: "Feedback Forms", icon: MessageSquareQuote },
     { to: "/deductions", label: "Deductions", icon: Wallet },
     { to: "/chat", label: "Chat Rooms", icon: MessagesSquare },
-    { to: "/settings", label: "Settings", icon: Settings },
   ];
 }
 

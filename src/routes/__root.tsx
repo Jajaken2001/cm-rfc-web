@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/hooks/useMe";
+import { ThemeProvider } from "@/hooks/useTheme";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -137,12 +138,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <SessionProvider>
         <AuthSync />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="top-right" richColors />
       </SessionProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
