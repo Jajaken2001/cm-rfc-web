@@ -399,6 +399,7 @@ export type Database = {
           created_by_email: string | null
           expires_at: string | null
           id: string
+          media: Json
           message: string
           publish_at: string
           repeat_schedule: string
@@ -414,6 +415,7 @@ export type Database = {
           created_by_email?: string | null
           expires_at?: string | null
           id?: string
+          media?: Json
           message: string
           publish_at?: string
           repeat_schedule?: string
@@ -429,6 +431,7 @@ export type Database = {
           created_by_email?: string | null
           expires_at?: string | null
           id?: string
+          media?: Json
           message?: string
           publish_at?: string
           repeat_schedule?: string
@@ -727,6 +730,10 @@ export type Database = {
         Args: { _expires_at: string; _label: string; _max_uses: number }
         Returns: string
       }
+      delete_audit_log: { Args: { _id: string }; Returns: undefined }
+      delete_deduction: { Args: { _id: string }; Returns: undefined }
+      delete_invite_link: { Args: { _id: string }; Returns: undefined }
+      delete_notification: { Args: { _id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
