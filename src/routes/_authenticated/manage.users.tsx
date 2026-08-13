@@ -127,6 +127,7 @@ function ManageUsersPage() {
       <PageHeader
         title="Users"
         description="Every account that has signed in. Authorize the people who should have access and set their role."
+        actions={isDeveloperRole(myRole) ? <PreauthorizedEmailsDialog /> : undefined}
       />
 
       <Input
@@ -135,6 +136,7 @@ function ManageUsersPage() {
         onChange={(e) => setSearch(e.target.value)}
         className="sm:max-w-sm"
       />
+
 
       {query.isLoading ? (
         <LoadingState />
