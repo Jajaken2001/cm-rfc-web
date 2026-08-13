@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Mail, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +13,17 @@ import {
 } from "@/components/portal/Primitives";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -221,5 +232,128 @@ function ManageUsersPage() {
         Refresh presence
       </Button>
     </div>
+  );
+}
+
+function PreauthorizedEmailsDialog() {
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [raw, setRaw] = useState("");
+
+  const list = useQuery({
+    queryKey: ["preauthorized-emails"],
+    enabled: open,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("preauthorized_emails")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const parsed = [
+    ...new Set(
+      raw
+        .split(/[\s,;]+/)
+        .map((e) => e.trim().toLowerCase())
+        .filter((e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)),
+    ),
+  ];
+
+  const add = useMutation({
+    mutationFn: async () => {
+      if (!parsed.length) throw new Error("Add at least one valid email address");
+      const { data, error } = await supabase.rpc("add_preauthorized_emails", { _emails: parsed });
+      if (error) throw error;
+      return data as number;
+    },
+    onSuccess: (count) => {
+      void queryClient.invalidateQueries({ queryKey: ["preauthorized-emails"] });
+      void queryClient.invalidateQueries({ queryKey: ["members"] });
+      setRaw("");
+      toast.success(`${count} email${count === 1 ? "" : "s"} pre-authorized`);
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not add these emails"),
+  });
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("delete_preauthorized_email", { _id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["preauthorized-emails"] });
+      toast.success("Email removed");
+    },
+    onError: () => toast.error("Could not remove this email"),
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>
+          <Mail className="size-4" /> Add emails
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Pre-authorize emails</DialogTitle>
+          <DialogDescription>
+            Listed addresses are approved in advance — the account is authorized automatically the
+            first time that person signs in with Google. Paste one or many, separated by commas,
+            spaces or new lines.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3">
+          <Label htmlFor="preauth-emails">Email addresses</Label>
+          <Textarea
+            id="preauth-emails"
+            rows={5}
+            value={raw}
+            onChange={(e) => setRaw(e.target.value)}
+            placeholder="first@company.com, second@company.com"
+          />
+          <p className="text-xs text-muted-foreground">
+            {parsed.length} valid address{parsed.length === 1 ? "" : "es"} detected.
+          </p>
+          <Button disabled={add.isPending || parsed.length === 0} onClick={() => add.mutate()}>
+            {add.isPending ? "Adding…" : "Add to list"}
+          </Button>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-sm font-medium">Pre-authorized list</h3>
+          {list.isLoading ? (
+            <LoadingState />
+          ) : (list.data ?? []).length === 0 ? (
+            <p className="text-sm text-muted-foreground">No emails pre-authorized yet.</p>
+          ) : (
+            <ul className="divide-y divide-border rounded-md border border-border">
+              {(list.data ?? []).map((row) => (
+                <li key={row.id} className="flex items-center gap-3 px-3 py-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm">{row.email}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {row.claimed_at ? "Signed in" : "Waiting for first sign-in"}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Remove ${row.email}`}
+                    disabled={remove.isPending}
+                    onClick={() => remove.mutate(row.id)}
+                  >
+                    <Trash2 className="size-4 text-destructive" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
