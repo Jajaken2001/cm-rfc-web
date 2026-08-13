@@ -130,10 +130,18 @@ function ManageDeductionsPage() {
         title="Deductions"
         description="Salary deductions are grouped by week. Employees only ever see their own records."
         actions={
-          <Button onClick={() => setOpen(true)}>
-            <Plus className="size-4" /> Record deduction
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link to="/manage/bulk-deductions">
+                <Users className="size-4" /> Bulk Deduction
+              </Link>
+            </Button>
+            <Button onClick={() => setOpen(true)}>
+              <Plus className="size-4" /> Record deduction
+            </Button>
+          </div>
         }
+
       />
 
       {query.isLoading ? (
