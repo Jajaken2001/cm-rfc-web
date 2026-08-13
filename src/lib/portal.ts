@@ -184,8 +184,9 @@ export function formatDate(value: string | null | undefined): string {
 }
 
 export function formatPeso(amount: number): string {
-  return `₱${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+
 
 export function weekLabel(weekStart: string): string {
   const [y, m, d] = weekStart.slice(0, 10).split("-").map(Number);
