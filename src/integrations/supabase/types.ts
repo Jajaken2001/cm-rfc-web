@@ -442,6 +442,39 @@ export type Database = {
         }
         Relationships: []
       }
+      preauthorized_emails: {
+        Row: {
+          added_by: string | null
+          added_by_email: string | null
+          claimed_at: string | null
+          claimed_by: string | null
+          created_at: string
+          email: string
+          id: string
+          note: string | null
+        }
+        Insert: {
+          added_by?: string | null
+          added_by_email?: string | null
+          claimed_at?: string | null
+          claimed_by?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          note?: string | null
+        }
+        Update: {
+          added_by?: string | null
+          added_by_email?: string | null
+          claimed_at?: string | null
+          claimed_by?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          note?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -688,6 +721,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_preauthorized_emails: { Args: { _emails: string[] }; Returns: number }
       adjust_deduction: {
         Args: { _amount: number; _date: string; _id: string; _reason: string }
         Returns: undefined
@@ -734,6 +768,7 @@ export type Database = {
       delete_deduction: { Args: { _id: string }; Returns: undefined }
       delete_invite_link: { Args: { _id: string }; Returns: undefined }
       delete_notification: { Args: { _id: string }; Returns: undefined }
+      delete_preauthorized_email: { Args: { _id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

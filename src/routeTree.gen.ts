@@ -25,6 +25,7 @@ import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authentica
 import { Route as AuthenticatedChatRoomIdRouteImport } from './routes/_authenticated/chat.$roomId'
 import { Route as AuthenticatedManageAuditRouteImport } from './routes/_authenticated/manage.audit'
 import { Route as AuthenticatedManageBannersRouteImport } from './routes/_authenticated/manage.banners'
+import { Route as AuthenticatedManageBulkDeductionsRouteImport } from './routes/_authenticated/manage.bulk-deductions'
 import { Route as AuthenticatedManageCmsRouteImport } from './routes/_authenticated/manage.cms'
 import { Route as AuthenticatedManageDeductionsRouteImport } from './routes/_authenticated/manage.deductions'
 import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authenticated/manage.feedback'
@@ -121,6 +122,12 @@ const AuthenticatedManageBannersRoute =
     path: '/manage/banners',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageBulkDeductionsRoute =
+  AuthenticatedManageBulkDeductionsRouteImport.update({
+    id: '/manage/bulk-deductions',
+    path: '/manage/bulk-deductions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedManageCmsRoute = AuthenticatedManageCmsRouteImport.update({
   id: '/manage/cms',
   path: '/manage/cms',
@@ -202,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/manage/bulk-deductions': typeof AuthenticatedManageBulkDeductionsRoute
   '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -230,6 +238,7 @@ export interface FileRoutesByTo {
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/manage/audit': typeof AuthenticatedManageAuditRoute
   '/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/manage/bulk-deductions': typeof AuthenticatedManageBulkDeductionsRoute
   '/manage/cms': typeof AuthenticatedManageCmsRoute
   '/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -260,6 +269,7 @@ export interface FileRoutesById {
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
   '/_authenticated/manage/audit': typeof AuthenticatedManageAuditRoute
   '/_authenticated/manage/banners': typeof AuthenticatedManageBannersRoute
+  '/_authenticated/manage/bulk-deductions': typeof AuthenticatedManageBulkDeductionsRoute
   '/_authenticated/manage/cms': typeof AuthenticatedManageCmsRoute
   '/_authenticated/manage/deductions': typeof AuthenticatedManageDeductionsRoute
   '/_authenticated/manage/feedback': typeof AuthenticatedManageFeedbackRoute
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/banners'
+    | '/manage/bulk-deductions'
     | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/chat/$roomId'
     | '/manage/audit'
     | '/manage/banners'
+    | '/manage/bulk-deductions'
     | '/manage/cms'
     | '/manage/deductions'
     | '/manage/feedback'
@@ -347,6 +359,7 @@ export interface FileRouteTypes {
     | '/_authenticated/chat/$roomId'
     | '/_authenticated/manage/audit'
     | '/_authenticated/manage/banners'
+    | '/_authenticated/manage/bulk-deductions'
     | '/_authenticated/manage/cms'
     | '/_authenticated/manage/deductions'
     | '/_authenticated/manage/feedback'
@@ -483,6 +496,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageBannersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/bulk-deductions': {
+      id: '/_authenticated/manage/bulk-deductions'
+      path: '/manage/bulk-deductions'
+      fullPath: '/manage/bulk-deductions'
+      preLoaderRoute: typeof AuthenticatedManageBulkDeductionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/cms': {
       id: '/_authenticated/manage/cms'
       path: '/manage/cms'
@@ -574,6 +594,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
   AuthenticatedManageBannersRoute: typeof AuthenticatedManageBannersRoute
+  AuthenticatedManageBulkDeductionsRoute: typeof AuthenticatedManageBulkDeductionsRoute
   AuthenticatedManageCmsRoute: typeof AuthenticatedManageCmsRoute
   AuthenticatedManageDeductionsRoute: typeof AuthenticatedManageDeductionsRoute
   AuthenticatedManageFeedbackRoute: typeof AuthenticatedManageFeedbackRoute
@@ -599,6 +620,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
   AuthenticatedManageBannersRoute: AuthenticatedManageBannersRoute,
+  AuthenticatedManageBulkDeductionsRoute:
+    AuthenticatedManageBulkDeductionsRoute,
   AuthenticatedManageCmsRoute: AuthenticatedManageCmsRoute,
   AuthenticatedManageDeductionsRoute: AuthenticatedManageDeductionsRoute,
   AuthenticatedManageFeedbackRoute: AuthenticatedManageFeedbackRoute,
@@ -626,3 +649,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

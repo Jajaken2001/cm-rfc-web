@@ -168,9 +168,48 @@
   }
 }
 
+/* Public landing surface: soft pink + white, independent of the portal navy. */
+.theme-pink {
+  --background: oklch(0.995 0.004 350);
+  --foreground: oklch(0.24 0.045 350);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.045 350);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.045 350);
+  --primary: oklch(0.63 0.19 350);
+  --primary-foreground: oklch(0.995 0.005 350);
+  --secondary: oklch(0.965 0.018 350);
+  --secondary-foreground: oklch(0.32 0.07 350);
+  --muted: oklch(0.965 0.014 350);
+  --muted-foreground: oklch(0.52 0.045 350);
+  --accent: oklch(0.72 0.15 350);
+  --accent-foreground: oklch(0.99 0.005 350);
+  --border: oklch(0.918 0.022 350);
+  --input: oklch(0.918 0.022 350);
+  --ring: oklch(0.63 0.19 350);
+  --gradient-hero: linear-gradient(
+    145deg,
+    oklch(0.99 0.012 350) 0%,
+    oklch(0.94 0.045 345) 42%,
+    oklch(0.86 0.09 350) 100%
+  );
+  --shadow-panel: 0 1px 2px oklch(0.5 0.14 350 / 0.07), 0 14px 34px -18px oklch(0.5 0.14 350 / 0.28);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
 @utility surface-hero {
   background-image: var(--gradient-hero);
 }
+
+@utility surface-soft {
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-primary) 6%, transparent) 0%,
+    transparent 100%
+  );
+}
+
 
 @utility panel {
   background-color: var(--color-card);

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 
 import { useMembers } from "@/routes/_authenticated/manage.users";
@@ -130,10 +130,18 @@ function ManageDeductionsPage() {
         title="Deductions"
         description="Salary deductions are grouped by week. Employees only ever see their own records."
         actions={
-          <Button onClick={() => setOpen(true)}>
-            <Plus className="size-4" /> Record deduction
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link to="/manage/bulk-deductions">
+                <Users className="size-4" /> Bulk Deduction
+              </Link>
+            </Button>
+            <Button onClick={() => setOpen(true)}>
+              <Plus className="size-4" /> Record deduction
+            </Button>
+          </div>
         }
+
       />
 
       {query.isLoading ? (

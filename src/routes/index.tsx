@@ -11,6 +11,7 @@ import {
   Lock,
   MessageSquareQuote,
   ShieldCheck,
+  Sparkles,
   Wallet,
 } from "lucide-react";
 
@@ -36,6 +37,8 @@ export const Route = createFileRoute("/")({
         content:
           "Private organization portal for requests, feedback, official updates and salary deduction records.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Landing,
@@ -99,19 +102,19 @@ function Landing() {
   const c = content.data ?? DEFAULT_LANDING;
 
   return (
-    <PublicShell>
+    <PublicShell className="theme-pink">
       <SiteBanners />
 
-      <section className="surface-hero text-primary-foreground">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
+      <section className="surface-hero relative overflow-hidden">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/25 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-primary-foreground/85 sm:text-xs">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-card/70 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-primary shadow-sm backdrop-blur sm:text-xs">
               <Lock className="size-3.5 shrink-0" /> {c.eyebrow}
             </span>
-            <h1 className="mt-5 text-[2rem] leading-[1.12] sm:text-5xl lg:text-[3.25rem]">
+            <h1 className="mt-6 text-[2.1rem] leading-[1.08] text-foreground sm:text-5xl lg:text-[3.4rem]">
               {c.headline}
             </h1>
-            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-primary-foreground/80 sm:text-base">
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-lg">
               {c.subheadline}
             </p>
 
@@ -119,34 +122,39 @@ function Landing() {
               <GoogleSignInButton label={c.primaryCtaLabel} className="w-full sm:w-auto" />
               <Link
                 to="/privacy"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-primary-foreground/30 px-4 py-2.5 text-sm font-medium text-primary-foreground/90 transition-colors hover:bg-primary-foreground/10 sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/25 bg-card/70 px-5 py-2.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-card sm:w-auto"
               >
                 {c.secondaryCtaLabel} <ArrowRight className="size-4" />
               </Link>
             </div>
-            <p className="mt-3 text-sm text-primary-foreground/70">{c.footerNote}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{c.footerNote}</p>
 
-            <ul className="mt-8 grid gap-2.5 sm:grid-cols-1">
+            <ul className="mt-8 grid gap-2.5">
               {assurances.map((a) => (
-                <li key={a} className="flex items-start gap-2.5 text-sm text-primary-foreground/75">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent" />
+                <li key={a} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
                   {a}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-5 backdrop-blur sm:p-6">
-            <h2 className="font-display text-lg">{c.featuresTitle}</h2>
-            <ul className="mt-5 space-y-4">
+          <div className="panel relative p-6 sm:p-7">
+            <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-primary">
+              <Sparkles className="size-4" /> Inside the portal
+            </span>
+            <h2 className="mt-3 font-display text-xl">{c.featuresTitle}</h2>
+            <ul className="mt-6 space-y-4">
               {c.features.map((f, i) => {
                 const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]!;
                 return (
-                  <li key={`${f.title}-${i}`} className="flex gap-3">
-                    <Icon className="mt-0.5 size-5 shrink-0 text-accent" />
+                  <li key={`${f.title}-${i}`} className="flex gap-3.5">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Icon className="size-4.5" />
+                    </span>
                     <div className="min-w-0">
                       <p className="text-sm font-semibold">{f.title}</p>
-                      <p className="text-sm leading-relaxed text-primary-foreground/70">{f.body}</p>
+                      <p className="text-sm leading-relaxed text-muted-foreground">{f.body}</p>
                     </div>
                   </li>
                 );
@@ -156,23 +164,28 @@ function Landing() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-16">
-        <h2 className="text-2xl sm:text-3xl">How it works</h2>
-        <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-3">
-          {steps.map((s) => (
-            <div key={s.n} className="panel p-6">
-              <span className="font-display text-sm text-accent">{s.n}</span>
-              <h3 className="mt-3 text-lg">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
-            </div>
-          ))}
+      <section className="surface-soft">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+          <h2 className="text-2xl sm:text-3xl">How it works</h2>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            Three steps from sign-in to your role-specific workspace.
+          </p>
+          <div className="mt-9 grid gap-4 sm:gap-5 md:grid-cols-3">
+            {steps.map((s) => (
+              <div key={s.n} className="panel p-6">
+                <span className="font-display text-sm text-primary">{s.n}</span>
+                <h3 className="mt-3 text-lg">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="border-t border-border bg-card">
-        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 md:grid-cols-2 md:items-center">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-16 md:grid-cols-2 md:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-accent">
+            <span className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-primary">
               <ShieldCheck className="size-4" /> Access control
             </span>
             <h2 className="mt-3 text-2xl sm:text-3xl">Access is granted, never claimed</h2>
@@ -184,7 +197,7 @@ function Landing() {
           </div>
           <div className="panel flex flex-col justify-between gap-5 p-6">
             <div className="flex items-start gap-3">
-              <FileText className="mt-0.5 size-5 shrink-0 text-accent" />
+              <FileText className="mt-0.5 size-5 shrink-0 text-primary" />
               <p className="text-sm leading-relaxed text-muted-foreground">
                 Read how your Google account details, submissions, attachments and deduction records
                 are handled before you sign in.
@@ -192,7 +205,7 @@ function Landing() {
             </div>
             <Link
               to="/privacy"
-              className="inline-flex w-full items-center justify-center rounded-md border border-input px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary sm:w-fit"
+              className="inline-flex w-full items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:w-fit"
             >
               Read the Privacy Policy
             </Link>

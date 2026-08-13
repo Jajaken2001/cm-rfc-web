@@ -37,12 +37,19 @@ export function PublicFooter() {
   );
 }
 
-export function PublicShell({ children }: { children: ReactNode }) {
+export function PublicShell({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className={`flex min-h-screen flex-col ${className ?? ""}`}>
       <PublicHeader />
       <main className="flex-1">{children}</main>
       <PublicFooter />
     </div>
   );
 }
+
