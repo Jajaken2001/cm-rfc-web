@@ -1,0 +1,2 @@
+REVOKE ALL ON FUNCTION public.create_deduction(uuid, numeric, text, date, boolean) FROM public, anon;
+GRANT EXECUTE ON FUNCTION public.create_deduction(uuid, numeric, text, date, boolean) TO authenticated;
