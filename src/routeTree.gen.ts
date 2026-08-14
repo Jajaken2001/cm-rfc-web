@@ -33,6 +33,7 @@ import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authe
 import { Route as AuthenticatedManageInvitesRouteImport } from './routes/_authenticated/manage.invites'
 import { Route as AuthenticatedManageModerationRouteImport } from './routes/_authenticated/manage.moderation'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
+import { Route as AuthenticatedManageSalariesRouteImport } from './routes/_authenticated/manage.salaries'
 import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
 import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
 import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
@@ -169,6 +170,12 @@ const AuthenticatedManageRequestsRoute =
     path: '/manage/requests',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageSalariesRoute =
+  AuthenticatedManageSalariesRouteImport.update({
+    id: '/manage/salaries',
+    path: '/manage/salaries',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedManageUpdatesRoute =
   AuthenticatedManageUpdatesRouteImport.update({
     id: '/manage/updates',
@@ -223,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -253,6 +261,7 @@ export interface FileRoutesByTo {
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -285,6 +294,7 @@ export interface FileRoutesById {
   '/_authenticated/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/_authenticated/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/_authenticated/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/manage/invites'
     | '/manage/moderation'
     | '/manage/requests'
+    | '/manage/salaries'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
@@ -347,6 +358,7 @@ export interface FileRouteTypes {
     | '/manage/invites'
     | '/manage/moderation'
     | '/manage/requests'
+    | '/manage/salaries'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
@@ -378,6 +390,7 @@ export interface FileRouteTypes {
     | '/_authenticated/manage/invites'
     | '/_authenticated/manage/moderation'
     | '/_authenticated/manage/requests'
+    | '/_authenticated/manage/salaries'
     | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
     | '/_authenticated/submit/$formId'
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageRequestsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/salaries': {
+      id: '/_authenticated/manage/salaries'
+      path: '/manage/salaries'
+      fullPath: '/manage/salaries'
+      preLoaderRoute: typeof AuthenticatedManageSalariesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/updates': {
       id: '/_authenticated/manage/updates'
       path: '/manage/updates'
@@ -621,6 +641,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedManageInvitesRoute: typeof AuthenticatedManageInvitesRoute
   AuthenticatedManageModerationRoute: typeof AuthenticatedManageModerationRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
+  AuthenticatedManageSalariesRoute: typeof AuthenticatedManageSalariesRoute
   AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
@@ -649,6 +670,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedManageInvitesRoute: AuthenticatedManageInvitesRoute,
   AuthenticatedManageModerationRoute: AuthenticatedManageModerationRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
+  AuthenticatedManageSalariesRoute: AuthenticatedManageSalariesRoute,
   AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,
