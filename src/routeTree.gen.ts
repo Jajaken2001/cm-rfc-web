@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedSalaryRouteImport } from './routes/_authenticated/salary'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as JoinCodeRouteImport } from './routes/join.$code'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
@@ -32,6 +33,7 @@ import { Route as AuthenticatedManageFeedbackRouteImport } from './routes/_authe
 import { Route as AuthenticatedManageInvitesRouteImport } from './routes/_authenticated/manage.invites'
 import { Route as AuthenticatedManageModerationRouteImport } from './routes/_authenticated/manage.moderation'
 import { Route as AuthenticatedManageRequestsRouteImport } from './routes/_authenticated/manage.requests'
+import { Route as AuthenticatedManageSalariesRouteImport } from './routes/_authenticated/manage.salaries'
 import { Route as AuthenticatedManageUpdatesRouteImport } from './routes/_authenticated/manage.updates'
 import { Route as AuthenticatedManageUsersRouteImport } from './routes/_authenticated/manage.users'
 import { Route as AuthenticatedSubmitFormIdRouteImport } from './routes/_authenticated/submit.$formId'
@@ -90,6 +92,11 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSalaryRoute = AuthenticatedSalaryRouteImport.update({
+  id: '/salary',
+  path: '/salary',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -163,6 +170,12 @@ const AuthenticatedManageRequestsRoute =
     path: '/manage/requests',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedManageSalariesRoute =
+  AuthenticatedManageSalariesRouteImport.update({
+    id: '/manage/salaries',
+    path: '/manage/salaries',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedManageUpdatesRoute =
   AuthenticatedManageUpdatesRouteImport.update({
     id: '/manage/updates',
@@ -204,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/salary': typeof AuthenticatedSalaryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -216,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -233,6 +248,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/salary': typeof AuthenticatedSalaryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -245,6 +261,7 @@ export interface FileRoutesByTo {
   '/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/manage/users': typeof AuthenticatedManageUsersRoute
   '/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -264,6 +281,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/salary': typeof AuthenticatedSalaryRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -276,6 +294,7 @@ export interface FileRoutesById {
   '/_authenticated/manage/invites': typeof AuthenticatedManageInvitesRoute
   '/_authenticated/manage/moderation': typeof AuthenticatedManageModerationRoute
   '/_authenticated/manage/requests': typeof AuthenticatedManageRequestsRoute
+  '/_authenticated/manage/salaries': typeof AuthenticatedManageSalariesRoute
   '/_authenticated/manage/updates': typeof AuthenticatedManageUpdatesRoute
   '/_authenticated/manage/users': typeof AuthenticatedManageUsersRoute
   '/_authenticated/submit/$formId': typeof AuthenticatedSubmitFormIdRoute
@@ -295,6 +314,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/salary'
     | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
@@ -307,6 +327,7 @@ export interface FileRouteTypes {
     | '/manage/invites'
     | '/manage/moderation'
     | '/manage/requests'
+    | '/manage/salaries'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
@@ -324,6 +345,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/salary'
     | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
@@ -336,6 +358,7 @@ export interface FileRouteTypes {
     | '/manage/invites'
     | '/manage/moderation'
     | '/manage/requests'
+    | '/manage/salaries'
     | '/manage/updates'
     | '/manage/users'
     | '/submit/$formId'
@@ -354,6 +377,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/_authenticated/salary'
     | '/_authenticated/settings'
     | '/join/$code'
     | '/_authenticated/chat/$roomId'
@@ -366,6 +390,7 @@ export interface FileRouteTypes {
     | '/_authenticated/manage/invites'
     | '/_authenticated/manage/moderation'
     | '/_authenticated/manage/requests'
+    | '/_authenticated/manage/salaries'
     | '/_authenticated/manage/updates'
     | '/_authenticated/manage/users'
     | '/_authenticated/submit/$formId'
@@ -452,6 +477,13 @@ declare module '@tanstack/react-router' {
       path: '/request-forms'
       fullPath: '/request-forms'
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/salary': {
+      id: '/_authenticated/salary'
+      path: '/salary'
+      fullPath: '/salary'
+      preLoaderRoute: typeof AuthenticatedSalaryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings': {
@@ -545,6 +577,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedManageRequestsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/manage/salaries': {
+      id: '/_authenticated/manage/salaries'
+      path: '/manage/salaries'
+      fullPath: '/manage/salaries'
+      preLoaderRoute: typeof AuthenticatedManageSalariesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/manage/updates': {
       id: '/_authenticated/manage/updates'
       path: '/manage/updates'
@@ -590,6 +629,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedSalaryRoute: typeof AuthenticatedSalaryRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
@@ -601,6 +641,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedManageInvitesRoute: typeof AuthenticatedManageInvitesRoute
   AuthenticatedManageModerationRoute: typeof AuthenticatedManageModerationRoute
   AuthenticatedManageRequestsRoute: typeof AuthenticatedManageRequestsRoute
+  AuthenticatedManageSalariesRoute: typeof AuthenticatedManageSalariesRoute
   AuthenticatedManageUpdatesRoute: typeof AuthenticatedManageUpdatesRoute
   AuthenticatedManageUsersRoute: typeof AuthenticatedManageUsersRoute
   AuthenticatedSubmitFormIdRoute: typeof AuthenticatedSubmitFormIdRoute
@@ -616,6 +657,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedSalaryRoute: AuthenticatedSalaryRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
@@ -628,6 +670,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedManageInvitesRoute: AuthenticatedManageInvitesRoute,
   AuthenticatedManageModerationRoute: AuthenticatedManageModerationRoute,
   AuthenticatedManageRequestsRoute: AuthenticatedManageRequestsRoute,
+  AuthenticatedManageSalariesRoute: AuthenticatedManageSalariesRoute,
   AuthenticatedManageUpdatesRoute: AuthenticatedManageUpdatesRoute,
   AuthenticatedManageUsersRoute: AuthenticatedManageUsersRoute,
   AuthenticatedSubmitFormIdRoute: AuthenticatedSubmitFormIdRoute,

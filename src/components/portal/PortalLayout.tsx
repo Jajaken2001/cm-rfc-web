@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  BadgeDollarSign,
   BellRing,
   ClipboardList,
   FileSpreadsheet,
@@ -45,6 +46,8 @@ function navForRole(role: AppRole | null): NavItem[] {
   if (isStaff(role)) {
     const items: NavItem[] = [
       { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/salary", label: "My Salary", icon: BadgeDollarSign },
+      { to: "/deductions", label: "My Deductions", icon: Wallet },
       { to: "/manage/requests", label: "Requests", icon: ClipboardList },
       { to: "/manage/forms", label: "Forms", icon: FileSpreadsheet },
       { to: "/manage/users", label: "Users", icon: Users },
@@ -54,6 +57,7 @@ function navForRole(role: AppRole | null): NavItem[] {
     if (isAdminRole(role)) {
       items.push({ to: "/manage/moderation", label: "Moderation", icon: ShieldCheck });
       items.push({ to: "/manage/invites", label: "Access Links", icon: Link2 });
+      items.push({ to: "/manage/salaries", label: "Salary Management", icon: BadgeDollarSign });
       items.push({ to: "/manage/deductions", label: "Deductions", icon: Wallet });
     }
     items.push({ to: "/manage/updates", label: "Updates", icon: Megaphone });
@@ -67,6 +71,7 @@ function navForRole(role: AppRole | null): NavItem[] {
   return [
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/notifications", label: "Notifications", icon: BellRing },
+    { to: "/salary", label: "My Salary", icon: BadgeDollarSign },
     { to: "/my-requests", label: "My Requests", icon: ClipboardList },
     { to: "/request-forms", label: "Request Forms", icon: FileSpreadsheet },
     { to: "/feedback-forms", label: "Feedback Forms", icon: MessageSquareQuote },
