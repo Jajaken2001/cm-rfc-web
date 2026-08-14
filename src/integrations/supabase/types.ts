@@ -60,6 +60,7 @@ export type Database = {
           id: string
           is_hidden: boolean
           message: string
+          reply_to: string | null
           room_id: string
           sender_email: string
           sender_id: string
@@ -75,6 +76,7 @@ export type Database = {
           id?: string
           is_hidden?: boolean
           message: string
+          reply_to?: string | null
           room_id: string
           sender_email: string
           sender_id: string
@@ -90,6 +92,7 @@ export type Database = {
           id?: string
           is_hidden?: boolean
           message?: string
+          reply_to?: string | null
           room_id?: string
           sender_email?: string
           sender_id?: string
@@ -98,10 +101,55 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "chat_messages_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "chat_messages_room_id_fkey"
             columns: ["room_id"]
             isOneToOne: false
             referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          message_id: string
+          room_id: string
+          user_email: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          message_id: string
+          room_id: string
+          user_email?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          message_id?: string
+          room_id?: string
+          user_email?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
             referencedColumns: ["id"]
           },
         ]
@@ -508,6 +556,90 @@ export type Database = {
         }
         Relationships: []
       }
+      salary_weeks: {
+        Row: {
+          activity_bonus: number
+          chatter_bonus: number
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          day_1: number
+          day_2: number
+          day_3: number
+          day_4: number
+          day_5: number
+          day_6: number
+          day_7: number
+          deduction: number
+          deductions_back: number
+          gross_total: number
+          hiring_leader_bonus: number
+          id: string
+          last_week_salary: number
+          net_total: number
+          night_shift_allowance: number
+          service_fee: number
+          updated_at: string
+          user_email: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          activity_bonus?: number
+          chatter_bonus?: number
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          day_1?: number
+          day_2?: number
+          day_3?: number
+          day_4?: number
+          day_5?: number
+          day_6?: number
+          day_7?: number
+          deduction?: number
+          deductions_back?: number
+          gross_total?: number
+          hiring_leader_bonus?: number
+          id?: string
+          last_week_salary?: number
+          net_total?: number
+          night_shift_allowance?: number
+          service_fee?: number
+          updated_at?: string
+          user_email: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          activity_bonus?: number
+          chatter_bonus?: number
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          day_1?: number
+          day_2?: number
+          day_3?: number
+          day_4?: number
+          day_5?: number
+          day_6?: number
+          day_7?: number
+          deduction?: number
+          deductions_back?: number
+          gross_total?: number
+          hiring_leader_bonus?: number
+          id?: string
+          last_week_salary?: number
+          net_total?: number
+          night_shift_allowance?: number
+          service_fee?: number
+          updated_at?: string
+          user_email?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
       site_banners: {
         Row: {
           created_at: string
@@ -749,6 +881,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      bulk_save_salary_weeks: {
+        Args: { _notify?: boolean; _rows: Json; _week_start: string }
+        Returns: Json
+      }
       can_access_room: { Args: { _room_id: string }; Returns: boolean }
       create_deduction: {
         Args: {
@@ -769,6 +905,7 @@ export type Database = {
       delete_invite_link: { Args: { _id: string }; Returns: undefined }
       delete_notification: { Args: { _id: string }; Returns: undefined }
       delete_preauthorized_email: { Args: { _id: string }; Returns: undefined }
+      delete_salary_week: { Args: { _id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -804,6 +941,22 @@ export type Database = {
         Returns: undefined
       }
       revoke_invite_link: { Args: { _id: string }; Returns: undefined }
+      save_salary_week: {
+        Args: {
+          _activity: number
+          _chatter: number
+          _days: number[]
+          _deduction: number
+          _deductions_back: number
+          _hiring: number
+          _last_week: number
+          _night: number
+          _notify?: boolean
+          _user_id: string
+          _week_start: string
+        }
+        Returns: string
+      }
       set_authorization: {
         Args: { _authorized: boolean; _user_id: string }
         Returns: undefined
