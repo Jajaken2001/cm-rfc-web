@@ -19,6 +19,7 @@ import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
+import { Route as AuthenticatedSalaryRouteImport } from './routes/_authenticated/salary'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as JoinCodeRouteImport } from './routes/join.$code'
 import { Route as AuthenticatedChatIndexRouteImport } from './routes/_authenticated/chat.index'
@@ -90,6 +91,11 @@ const AuthenticatedRequestFormsRoute =
     path: '/request-forms',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSalaryRoute = AuthenticatedSalaryRouteImport.update({
+  id: '/salary',
+  path: '/salary',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/salary': typeof AuthenticatedSalaryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -233,6 +240,7 @@ export interface FileRoutesByTo {
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/salary': typeof AuthenticatedSalaryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -264,6 +272,7 @@ export interface FileRoutesById {
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
+  '/_authenticated/salary': typeof AuthenticatedSalaryRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/join/$code': typeof JoinCodeRoute
   '/_authenticated/chat/$roomId': typeof AuthenticatedChatRoomIdRoute
@@ -295,6 +304,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/salary'
     | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
+    | '/salary'
     | '/settings'
     | '/join/$code'
     | '/chat/$roomId'
@@ -354,6 +365,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
+    | '/_authenticated/salary'
     | '/_authenticated/settings'
     | '/join/$code'
     | '/_authenticated/chat/$roomId'
@@ -452,6 +464,13 @@ declare module '@tanstack/react-router' {
       path: '/request-forms'
       fullPath: '/request-forms'
       preLoaderRoute: typeof AuthenticatedRequestFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/salary': {
+      id: '/_authenticated/salary'
+      path: '/salary'
+      fullPath: '/salary'
+      preLoaderRoute: typeof AuthenticatedSalaryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings': {
@@ -590,6 +609,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
+  AuthenticatedSalaryRoute: typeof AuthenticatedSalaryRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedChatRoomIdRoute: typeof AuthenticatedChatRoomIdRoute
   AuthenticatedManageAuditRoute: typeof AuthenticatedManageAuditRoute
@@ -616,6 +636,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
+  AuthenticatedSalaryRoute: AuthenticatedSalaryRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedChatRoomIdRoute: AuthenticatedChatRoomIdRoute,
   AuthenticatedManageAuditRoute: AuthenticatedManageAuditRoute,
