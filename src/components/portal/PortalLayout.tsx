@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  BadgeDollarSign,
   BellRing,
   ClipboardList,
   FileSpreadsheet,
