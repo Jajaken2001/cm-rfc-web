@@ -1,6 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { ArrowLeft, CornerUpLeft, EyeOff, Flag, Paperclip, Send, SmilePlus, X } from "lucide-react";
+import {
+  ArrowLeft,
+  CornerUpLeft,
+  EyeOff,
+  Flag,
+  ImagePlay,
+  Mic,
+  Paperclip,
+  Send,
+  SmilePlus,
+  Square,
+  X,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -8,6 +20,9 @@ import { EmptyState, ErrorState, LoadingState, StatusBadge } from "@/components/
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { GifPicker } from "@/components/portal/GifPicker";
+import { MediaEmbeds } from "@/components/portal/MediaEmbeds";
+import { isDirectVideoFile, videoEmbedUrl, type MediaItem } from "@/lib/media";
 import { useMe } from "@/hooks/useMe";
 import { supabase } from "@/integrations/supabase/client";
 import { ROLE_LABEL, formatDateTime, initialsOf, isAdminRole, type AppRole } from "@/lib/portal";
@@ -32,6 +47,22 @@ interface ChatAttachment {
   name: string;
   size: number;
   type: string;
+  /** Set for externally hosted media such as GIPHY GIFs. */
+  url?: string;
+}
+
+/** Pulls playable video links out of a message so they render inside the room. */
+function inlineMediaOf(text: string): MediaItem[] {
+  const urls = text.match(/https?:\/\/[^\s]+/g) ?? [];
+  const seen = new Set<string>();
+  const items: MediaItem[] = [];
+  for (const raw of urls) {
+    const url = raw.replace(/[),.]+$/, "");
+    if (seen.has(url)) continue;
+    seen.add(url);
+    if (videoEmbedUrl(url) || isDirectVideoFile(url)) items.push({ kind: "video", url });
+  }
+  return items.slice(0, 3);
 }
 
 interface Message {
@@ -64,6 +95,9 @@ function ChatRoomPage() {
   const [file, setFile] = useState<File | null>(null);
   const [replyTo, setReplyTo] = useState<Message | null>(null);
   const [pickerFor, setPickerFor] = useState<string | null>(null);
+  const [gifOpen, setGifOpen] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const recorderRef = useRef<MediaRecorder | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -127,9 +161,17 @@ function ChatRoomPage() {
   }, [messagesQuery.data]);
 
   const send = useMutation({
-    mutationFn: async ({ text, upload }: { text: string; upload: File | null }) => {
+    mutationFn: async ({
+      text,
+      upload,
+      external,
+    }: {
+      text: string;
+      upload: File | null;
+      external?: ChatAttachment | null;
+    }) => {
       if (!profile) throw new Error("No profile");
-      let attachment: ChatAttachment | null = null;
+      let attachment: ChatAttachment | null = external ?? null;
       if (upload) {
         const safe = upload.name.replace(/[^\w.\-]+/g, "_").slice(-80);
         const path = `${profile.id}/chat/${roomId}/${Date.now()}-${safe}`;
@@ -229,6 +271,34 @@ function ChatRoomPage() {
     send.mutate({ text: text.slice(0, 2000) || (file ? file.name : ""), upload: file });
   }
 
+  async function toggleRecording() {
+    if (recording) {
+      recorderRef.current?.stop();
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: BlobPart[] = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+      recorder.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        setRecording(false);
+        const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
+        if (blob.size === 0) return;
+        const voice = new File([blob], `voice-${Date.now()}.webm`, { type: "audio/webm" });
+        send.mutate({ text: "🎤 Voice message", upload: voice });
+      };
+      recorderRef.current = recorder;
+      recorder.start();
+      setRecording(true);
+    } catch {
+      toast.error("Microphone access was blocked");
+    }
+  }
+
   return (
     <div className="flex h-[calc(100vh-8rem)] flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -293,6 +363,9 @@ function ChatRoomPage() {
                     ) : (
                       <>
                         <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">{m.message}</p>
+                        {inlineMediaOf(m.message).length ? (
+                          <MediaEmbeds items={inlineMediaOf(m.message)} className="mt-2 max-w-lg" />
+                        ) : null}
                         {m.attachment ? <AttachmentView attachment={m.attachment} /> : null}
                       </>
                     )}
@@ -428,6 +501,44 @@ function ChatRoomPage() {
             >
               <Paperclip className="size-4" />
             </Button>
+            <div className="relative">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Send a GIF"
+                onClick={() => setGifOpen((v) => !v)}
+              >
+                <ImagePlay className="size-4" />
+              </Button>
+              {gifOpen ? (
+                <GifPicker
+                  onClose={() => setGifOpen(false)}
+                  onPick={(gif) =>
+                    send.mutate({
+                      text: gif.title || "GIF",
+                      upload: null,
+                      external: {
+                        path: "",
+                        name: gif.title || "GIF",
+                        size: 0,
+                        type: "image/gif",
+                        url: gif.url,
+                      },
+                    })
+                  }
+                />
+              ) : null}
+            </div>
+            <Button
+              type="button"
+              variant={recording ? "destructive" : "outline"}
+              size="icon"
+              aria-label={recording ? "Stop recording" : "Record a voice message"}
+              onClick={() => void toggleRecording()}
+            >
+              {recording ? <Square className="size-4" /> : <Mic className="size-4" />}
+            </Button>
             <Textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
@@ -458,9 +569,13 @@ function ChatRoomPage() {
 }
 
 function AttachmentView({ attachment }: { attachment: ChatAttachment }) {
-  const [url, setUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(attachment.url ?? null);
 
   useEffect(() => {
+    if (attachment.url) {
+      setUrl(attachment.url);
+      return;
+    }
     let active = true;
     void supabase.storage
       .from("attachments")
@@ -471,10 +586,25 @@ function AttachmentView({ attachment }: { attachment: ChatAttachment }) {
     return () => {
       active = false;
     };
-  }, [attachment.path]);
+  }, [attachment.path, attachment.url]);
 
   if (!url) {
     return <p className="mt-1 text-xs text-muted-foreground">Loading attachment…</p>;
+  }
+
+  if (attachment.type.startsWith("video/")) {
+    return (
+      <video
+        controls
+        preload="metadata"
+        src={url}
+        className="mt-2 w-full max-w-lg rounded-md border border-border"
+      />
+    );
+  }
+
+  if (attachment.type.startsWith("audio/")) {
+    return <audio controls src={url} className="mt-2 w-full max-w-sm" />;
   }
 
   if (attachment.type.startsWith("image/")) {
