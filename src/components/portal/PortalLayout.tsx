@@ -10,6 +10,7 @@ import {
   Menu,
   MessageSquareQuote,
   MessagesSquare,
+  Trophy,
   Megaphone,
   PanelsTopLeft,
   ScrollText,
@@ -47,6 +48,7 @@ function navForRole(role: AppRole | null): NavItem[] {
     const items: NavItem[] = [
       { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
       { to: "/salary", label: "My Salary", icon: BadgeDollarSign },
+      { to: "/leaderboard", label: "Salary Leaderboard", icon: Trophy },
       { to: "/deductions", label: "My Deductions", icon: Wallet },
       { to: "/manage/requests", label: "Requests", icon: ClipboardList },
       { to: "/manage/forms", label: "Forms", icon: FileSpreadsheet },
@@ -72,6 +74,7 @@ function navForRole(role: AppRole | null): NavItem[] {
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { to: "/notifications", label: "Notifications", icon: BellRing },
     { to: "/salary", label: "My Salary", icon: BadgeDollarSign },
+    { to: "/leaderboard", label: "Salary Leaderboard", icon: Trophy },
     { to: "/my-requests", label: "My Requests", icon: ClipboardList },
     { to: "/request-forms", label: "Request Forms", icon: FileSpreadsheet },
     { to: "/feedback-forms", label: "Feedback Forms", icon: MessageSquareQuote },

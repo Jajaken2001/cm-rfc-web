@@ -16,6 +16,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDeductionsRouteImport } from './routes/_authenticated/deductions'
 import { Route as AuthenticatedFeedbackFormsRouteImport } from './routes/_authenticated/feedback-forms'
+import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedMyRequestsRouteImport } from './routes/_authenticated/my-requests'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedRequestFormsRouteImport } from './routes/_authenticated/request-forms'
@@ -73,6 +74,12 @@ const AuthenticatedFeedbackFormsRoute =
   AuthenticatedFeedbackFormsRouteImport.update({
     id: '/feedback-forms',
     path: '/feedback-forms',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLeaderboardRoute =
+  AuthenticatedLeaderboardRouteImport.update({
+    id: '/leaderboard',
+    path: '/leaderboard',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMyRequestsRoute = AuthenticatedMyRequestsRouteImport.update({
@@ -214,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/deductions': typeof AuthenticatedDeductionsRoute
   '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
@@ -245,6 +253,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/deductions': typeof AuthenticatedDeductionsRoute
   '/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/my-requests': typeof AuthenticatedMyRequestsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/request-forms': typeof AuthenticatedRequestFormsRoute
@@ -278,6 +287,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/deductions': typeof AuthenticatedDeductionsRoute
   '/_authenticated/feedback-forms': typeof AuthenticatedFeedbackFormsRoute
+  '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/my-requests': typeof AuthenticatedMyRequestsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/request-forms': typeof AuthenticatedRequestFormsRoute
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/deductions'
     | '/feedback-forms'
+    | '/leaderboard'
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/deductions'
     | '/feedback-forms'
+    | '/leaderboard'
     | '/my-requests'
     | '/notifications'
     | '/request-forms'
@@ -374,6 +386,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/deductions'
     | '/_authenticated/feedback-forms'
+    | '/_authenticated/leaderboard'
     | '/_authenticated/my-requests'
     | '/_authenticated/notifications'
     | '/_authenticated/request-forms'
@@ -456,6 +469,13 @@ declare module '@tanstack/react-router' {
       path: '/feedback-forms'
       fullPath: '/feedback-forms'
       preLoaderRoute: typeof AuthenticatedFeedbackFormsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/my-requests': {
@@ -626,6 +646,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDeductionsRoute: typeof AuthenticatedDeductionsRoute
   AuthenticatedFeedbackFormsRoute: typeof AuthenticatedFeedbackFormsRoute
+  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
   AuthenticatedMyRequestsRoute: typeof AuthenticatedMyRequestsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedRequestFormsRoute: typeof AuthenticatedRequestFormsRoute
@@ -654,6 +675,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDeductionsRoute: AuthenticatedDeductionsRoute,
   AuthenticatedFeedbackFormsRoute: AuthenticatedFeedbackFormsRoute,
+  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
   AuthenticatedMyRequestsRoute: AuthenticatedMyRequestsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedRequestFormsRoute: AuthenticatedRequestFormsRoute,
